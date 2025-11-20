@@ -5,9 +5,9 @@ class Categoria(models.Model):
 
     nome = models.CharField(max_length=100, unique=True, verbose_name="Nome da Categoria")
     visualizacoes = models.IntegerField(default=0)
-    receita_popular = models.BooleanField(default=False, verbose_name="É Receita Popular")
+#   receita_popular = models.BooleanField(default=False, verbose_name="É Receita Popular")
     receitas_vinculadas = models.IntegerField(default=0)
-    data_criacao = models.DateField(auto_now_add=True)
+    data_criacao = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Categoria"
