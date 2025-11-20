@@ -1,13 +1,35 @@
 from django.db import models
+from django.db.models import Sum
+from apps.receitas.models import Receita
 
 # Create your models here.
 class Categoria(models.Model):
 
     nome = models.CharField(max_length=100, unique=True, verbose_name="Nome da Categoria")
-    visualizacoes = models.IntegerField(default=0)
-    receita_popular = models.BooleanField(default=False, verbose_name="É Receita Popular")
-    receitas_vinculadas = models.IntegerField(default=0)
-    data_criacao = models.DateField(auto_now_add=True)
+    data_criacao = models.DateField(auto_now_add=True, verbose_name="Data de Criação")
+    
+    receita_mais_popular = models.ForeignKey(
+        Receita,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='categoria_mais_popular_vinculada', 
+        verbose_name="Receita Mais Popular"
+    )
+
+    # Relacionamento M:N com Receita, tabela CategoriaReceita
+    receitas = models.ManyToManyField(
+        'receitas.Receita',
+        through='CategoriaReceita',
+        related_name='categorias_vinculadas'
+    )
+
+    # VIZUALIZACAO_TOTAL
+    @property
+    def visualizacao_total(self):
+        """Calcula a soma de visualizações de todas as receitas vinculadas."""
+        total_views = self.receitas.aggregate(Sum('visualizacoes'))['visualizacoes__sum']
+        return total_views or 0
 
     class Meta:
         verbose_name = "Categoria"
@@ -15,3 +37,16 @@ class Categoria(models.Model):
     
     def __str__(self):
         return self.nome
+    
+# TABELA DE LIGAÇÃO
+class CategoriaReceita(models.Model):
+
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE) 
+    receita = models.ForeignKey(Receita, on_delete=models.CASCADE)
+    class Meta:
+        unique_together = (('categoria', 'receita'), ) 
+        verbose_name = "Vínculo Categoria-Receita"
+        verbose_name_plural = "Vínculos Categoria-Receita"
+
+    def __str__(self):
+        return f"{self.categoria.nome} em {self.receita.titulo}"
