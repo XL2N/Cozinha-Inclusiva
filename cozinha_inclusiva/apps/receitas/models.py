@@ -1,6 +1,5 @@
 from django.db import models
 from django.db.models import Sum
-from apps.categorias.models import Categoria
 
 # ENTIDADE RECEITA.
 class Receita(models.Model):
@@ -18,10 +17,9 @@ class Receita(models.Model):
         related_name='receitas_usando',
     )
 
-    # Relacionamento M:N com Categorias, tabela ReceitaCategoria
     categoria = models.ManyToManyField(
-        Categoria, 
-        related_name='receitas'
+        'categorias.Categoria',  # Referência como string 'app_name.ModelName'
+        related_name='receitas_categoria'
     )
 
     class Meta:
