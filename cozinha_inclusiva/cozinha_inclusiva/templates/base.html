@@ -52,22 +52,24 @@
                         href="{% if request.resolver_match.url_name == 'inicio' %}javascript:void(0);{% else %}{% url 'inicio' %}{% endif %}">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold {% if request.resolver_match.url_name == 'categoria' %}active{% endif %}" 
-                        href="{% if request.resolver_match.url_name == 'categoria' %}javascript:void(0);{% else %}#{% endif %}">Categorias</a>
+                        <a class="nav-link fw-bold {% if request.resolver_match.url_name == 'categorias' %}active{% endif %}" 
+                        href="{% if request.resolver_match.url_name == 'categorias' %}javascript:void(0);{% else %}{% url 'categorias' %}{% endif %}">Categorias</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-bold {% if request.resolver_match.url_name == 'sobre' %}active{% endif %}" 
-                        href="{% if request.resolver_match.url_name == 'sobre' %}javascript:void(0);{% else %}#{% endif %}">Sobre</a>
+                        href="{% if request.resolver_match.url_name == 'sobre' %}javascript:void(0);{% else %}{% url 'sobre' %}{% endif %}">Sobre</a>
                     </li>
                 </ul>
 
                 <!--Barra de Busca-->
-                <div class="search-box">
-                    <input type="text" class="form-control search-input" placeholder="Buscar...">
-                    <button class="btn search-btn" type="button">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </div>
+                <form action="{% url 'busca' %}" method="GET" class="d-flex">
+                    <div class="search-box">
+                        <input type="text" name="termo" class="form-control search-input" placeholder="Buscar receita, ingrediente ou categoria..." value="{{ request.GET.termo }}">
+                        <button class="btn search-btn" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </form>
 
                 {% if user.is_authenticated %}
                 <a class="btn btn-outline-danger" href="{% url 'logout' %}">
@@ -102,8 +104,8 @@
                 <!-- Links de Navegação -->
                 <div class="menu col-md-3 mb-4 d-flex flex-column justify-content-center align-items-start">
                     <a href="{% url 'inicio' %}">Início</a>
-                    <a href="#">Categorias</a>    
-                    <a href="#">Sobre</a>
+                    <a href="{% url 'categorias' %}">Categorias</a>    
+                    <a href="{% url 'sobre' %}">Sobre</a>
                 </div>
 
                 <!-- Informações Legais -->

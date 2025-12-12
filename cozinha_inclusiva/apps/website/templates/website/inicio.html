@@ -107,7 +107,7 @@
         <div class="row g-4">
             {% for receita in receitas %}
             <div class="col-md-4">
-                <a href="#" class="text-decoration-none">
+                <a href="{% url 'receita_selecionada' receita.id %}" class="text-decoration-none">
                     <div class="recipe-card">
                         <!-- IMAGEM CAPA -->
                         <div class="recipe-image">

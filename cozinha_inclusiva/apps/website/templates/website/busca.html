@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ termo }} - Cozinha Inclusiva{% endblock %}
+{% load static %}
+
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'css/website/inicio.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Título da Busca -->
+<section class="py-5" style="background-color: var(--bege);">
+    <div class="container" style="max-width: 1320px;">
+        {% if termo %}
+            <h2 class="section-title mb-2">Resultados da busca</h2>
+            <p class="text-center" style="font-size: 1.2rem; color: var(--marrom-principal);">
+                Buscando por: <strong>"{{ termo }}"</strong> - {{ total }} resultado{{ total|pluralize }}
+            </p>
+        {% else %}
+            <h2 class="section-title">Buscar Receitas</h2>
+            <p class="text-center" style="font-size: 1.2rem; color: var(--marrom-principal);">
+                Digite o nome de uma receita, ingrediente ou categoria
+            </p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Resultados da Busca -->
+<section class="recipes-section">
+    <div class="container" style="max-width: 1320px;">
+        
+        {% if receitas %}
+        <div class="row g-4">
+            {% for receita in receitas %}
+            <div class="col-md-4">
+                <a href="{% url 'receita_selecionada' receita.id %}" class="text-decoration-none">
+                    <div class="recipe-card">
+                        <!-- IMAGEM CAPA -->
+                        <div class="recipe-image">
+                            {% if receita.imagem_capa %}
+                            <img src="{{ receita.imagem_capa.url }}" alt="{{ receita.titulo }}">
+                            {% else %}
+                            <img src="{% static 'image/default_recipe.png' %}" alt="Imagem padrão">
+                            {% endif %}
+                        </div>
+                        <!-- NOME E DESCRIÇÃO -->
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">{{ receita.titulo }}</h3>
+                            <p class="recipe-description">{{ receita.descricao|truncatechars:80 }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% elif termo %}
+        <div class="text-center py-5">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 4rem; color: var(--verde-medio); opacity: 0.3;"></i>
+            <h3 class="mt-4" style="color: var(--marrom-principal);">Nenhuma receita encontrada</h3>
+            <p class="text-muted">Tente buscar por outro termo</p>
+            <a href="{% url 'inicio' %}" class="btn btn-primary mt-3" style="background-color: var(--verde-medio); border: none;">
+                Voltar para o início
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

@@ -20,15 +20,15 @@
 }
 
 .hero-slide-1 {
-    background-image: url('/static/image/hero1.jpg');
+    background-image: url('/static/image/hero1.png');
 }
 
 .hero-slide-2 {
-    background-image: url('/static/image/hero2.jpg');
+    background-image: url('/static/image/hero2.png');
 }
 
 .hero-slide-3 {
-    background-image: url('/static/image/hero3.jpg');
+    background-image: url('/static/image/hero3.png');
 }
 
 .hero-overlay {
