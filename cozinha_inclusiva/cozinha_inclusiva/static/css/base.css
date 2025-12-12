@@ -1,9 +1,9 @@
 /* Cozinha Inclusiva - Estilos Base */
 
-/* Paleta de cores */
+/*----- Paleta de cores -----*/
 :root {
-    --marrom-principal: #3F2C24;
-    --bege: #F0D3BC;
+    --marrom-principal: #5D3C2A;
+    --bege: #E2D9C8;
     --verde-claro: #B4D39D;
     --verde-medio: #7B926A;
     --verde-escuro: #1B5E2F;      
@@ -14,7 +14,13 @@
     --texto-preto: #000000;
 }
 
-/* Aplicando as cores de fundo e texto padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*----- BASE ---- */
 body {
     background-color: var(--fundo-neutro) !important;
     color: var(--marrom-principal);
@@ -22,42 +28,48 @@ body {
     font-weight: 600;
 }
 
-/* Navbar */
-.navbar-amarelo {
+/*----- NAVBAR ---- */
+.navbar-verde {
     background: var(--verde-claro) !important;
     box-shadow: none;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
     border: none;
 }
 
-.navbar-amarelo .navbar-nav .nav-link {
+.navbar-verde .container {
+    max-width: 1320px;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.navbar-verde .navbar-nav .nav-link {
     color: var(--marrom-principal) !important;
     font-weight: 700;
-    font-size: 1.1rem;
-    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    padding: 0.4rem 0.8rem;
     transition: color 0.2s ease-in-out;
 }
 
-.navbar-amarelo .navbar-nav .nav-link:hover {
+.navbar-verde .navbar-nav .nav-link:hover {
     color: var(--verde-escuro) !important;
 }
 
-.navbar-amarelo .navbar-nav .nav-link.active {
+.navbar-verde .navbar-nav .nav-link.active {
     color: var(--verde-escuro) !important;
     cursor: pointer;
 }
 
-.navbar-amarelo .btn-link {
+.navbar-verde .btn-link {
     color: var(--marrom-principal) !important;
     text-decoration: none;
 }
 
-.navbar-amarelo .btn-link:hover {
+.navbar-verde .btn-link:hover {
     color: var(--verde-escuro) !important;
 }
 
-/* Barra de Busca */
+/*----- BARRA DE BUSCA ---- */
 .search-box {
     position: relative;
     display: flex;
@@ -102,37 +114,7 @@ body {
     color: var(--verde-escuro);
 }
 
-.btn-amarelo {
-    background-color: var(--amarelo-principal);
-    color: var(--texto-escuro);
-    border-color: var(--amarelo-principal);
-    font-weight: 700;
-    transition: all 0.2s ease-in-out;
-    padding: 0.5rem 1.5rem;
-}
-
-.btn-amarelo:hover {
-    background-color: var(--amarelo-hover);
-    color: var(--texto-escuro);
-    border-color: var(--amarelo-hover);
-    /* Detalhe lilás no hover do botão principal! */
-    box-shadow: 0 0 8px rgba(164, 117, 164, 0.5);
-}
-
-.btn-outline-lilas {
-    color: var(--lilas-detalhe);
-    border-color: var(--lilas-detalhe);
-    font-weight: 700;
-    transition: all 0.2s ease-in-out;
-}
-
-.btn-outline-lilas:hover {
-    background-color: var(--lilas-detalhe);
-    color: var(--texto-claro);
-    border-color: var(--lilas-detalhe);
-}
-
-/* Links */
+/*----- LINKS ---- */
 a {
     color: var(--lilas-detalhe);
     text-decoration: none;
@@ -143,17 +125,23 @@ a:hover {
     color: var(--verde-medio);
 }
 
-/* Formulários */
+/*----- FORMULÁRIOS ---- */
 .form-control:focus {
     border-color: var(--verde-medio);
     box-shadow: 0 0 0 0.25rem rgba(123, 146, 106, 0.25);
 }
 
-/* Footer */
+/*----- FOOTER ---- */
 footer {
     background-color: var(--verde-claro) !important;
     color: var(--texto-preto);
-    padding: 2rem 0;
+}
+
+footer .container {
+    max-width: 1320px;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    margin-bottom: 1rem;
 }
 
 footer h5 {
@@ -180,7 +168,7 @@ footer .menu a {
 }
 
 footer p{
-    font-size: 1.1rem;
+    font-size: 1.0rem;
     margin-bottom: 0.5rem;
 }
 

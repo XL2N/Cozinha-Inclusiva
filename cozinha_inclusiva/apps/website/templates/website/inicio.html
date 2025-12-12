@@ -3,35 +3,136 @@
 {% load static %}
 
 {% block extra_style %}
-<link rel="stylesheet" href="{% static 'css/inicio.css' %}">
+<link rel="stylesheet" href="{% static 'css/website/inicio.css' %}">
 {% endblock %}
 
-
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-8">
 
-            <div class="card shadow-lg border-0 text-center welcome-card">
-                <div class="card-body">
-                    <h1 class="card-title mb-3">Organize seu dia</h1>
-                    <p class="card-text text-muted mb-4">
-                        Simples, rápido e eficiente. Entre ou crie sua conta para começar a listar suas tarefas.
-                    </p>
-
-                    <div class="d-grid gap-3">
-                        <a href="{% url 'login'%}" class="btn btn-amarelo btn-lg">
-                            Fazer Login
-                        </a>
-                        <a href="{% url 'cadastro'%}" class="btn btn-outline-lilas btn-lg">
-                            Cadastrar-se
-                        </a>
+<!-- Carroussel/Hero Section -->
+<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-inner">
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+            <div class="hero-section hero-slide-1">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h1 class="hero-title">Receitas que acolhem todos os sabores</h1>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-                
-                
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+            <div class="hero-section hero-slide-2">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h1 class="hero-title">Sabor e saúde em cada receita</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+            <div class="hero-section hero-slide-3">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h1 class="hero-title">Cozinha inclusiva para todos</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Indicadores -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
 </div>
+
+<!-- Filtros -->
+<section class="filters-section">
+    <div class="container">
+        <div class="filters-wrapper">
+
+            {% for categoria in categorias %}
+            <a href="{% url 'inicio' %}?filtro={{ categoria.nome }}" 
+                class="filter-item text-decoration-none 
+                {% if request.GET.filtro == categoria.nome %}active-filter{% endif %}">
+
+                {% if request.GET.filtro == categoria.nome %}
+                <i class="fa-regular fa-square-check"></i>
+                {% else %}
+                <i class="fa-regular fa-square"></i>
+                {% endif %}
+
+                <span>{{ categoria.nome }}</span>  
+            </a>
+            {% endfor %}
+
+            {% if request.GET.filtro %}
+            <a href="{% url 'inicio' %}" class="filter-item text-decoration-none">
+                <i class="fa-solid fa-xmark"></i>
+                <span>Limpar Filtros</span>
+            </a>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<!-- Receitas Populares -->
+<section class="recipes-section">
+    <div class="container">
+        <h2 class="section-title">Receitas Populares</h2>
+        
+        <div class="row g-4">
+            {% for receita in receitas %}
+            <div class="col-md-4">
+                <a href="#" class="text-decoration-none">
+                    <div class="recipe-card">
+                        <!-- IMAGEM CAPA -->
+                        <div class="recipe-image">
+                            {% if receita.imagem_capa %}
+                            <img src="{{ receita.imagem_capa.url }}" alt="{{ receita.titulo }}">
+                            {% else %}
+                            <img src="{% static 'image/default_recipe.png' %}" alt="Imagem padrão">
+                            {% endif %}
+                        </div>
+                        <!-- NOME E DESCRIÇÃO -->
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">{{ receita.titulo }}</h3>
+                            <p class="recipe-description">{{ receita.descricao|truncatechars:80 }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center mt-5">
+                <p class="lead text-muted">Ainda não há receitas populares para exibir.</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
 {% endblock %}

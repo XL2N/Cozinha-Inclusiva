@@ -39,7 +39,7 @@
 <body class="d-flex flex-column min-vh-100">
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light navbar-amarelo">
+        <nav class="navbar navbar-expand-lg navbar-light navbar-verde">
             <div class="container d-flex justify-content-between align-items-center py-2">
                 <!--Logo-->
                 <img src="{% static 'image/logo_nav.png' %}" alt="Cozinha Inclusiva Logo" width="150"
@@ -49,15 +49,15 @@
                 <ul class="navbar-nav d-flex flex-row gap-4 mb-0">
                     <li class="nav-item">
                         <a class="nav-link fw-bold {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}" 
-                           href="{% if request.resolver_match.url_name == 'inicio' %}javascript:void(0);{% else %}{% url 'inicio' %}{% endif %}">Início</a>
+                        href="{% if request.resolver_match.url_name == 'inicio' %}javascript:void(0);{% else %}{% url 'inicio' %}{% endif %}">Início</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-bold {% if request.resolver_match.url_name == 'categoria' %}active{% endif %}" 
-                           href="{% if request.resolver_match.url_name == 'categoria' %}javascript:void(0);{% else %}#{% endif %}">Categorias</a>
+                        href="{% if request.resolver_match.url_name == 'categoria' %}javascript:void(0);{% else %}#{% endif %}">Categorias</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-bold {% if request.resolver_match.url_name == 'sobre' %}active{% endif %}" 
-                           href="{% if request.resolver_match.url_name == 'sobre' %}javascript:void(0);{% else %}#{% endif %}">Sobre</a>
+                        href="{% if request.resolver_match.url_name == 'sobre' %}javascript:void(0);{% else %}#{% endif %}">Sobre</a>
                     </li>
                 </ul>
 
@@ -80,13 +80,13 @@
     </header>
 
     <!-- Conteudo -->
-    <main class="container">
+    <main class="flex-grow-1">
         {% block content %}
         {% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="mt-5">
+    <footer>
         <div class="container">
             <div class="row py-4 align-items-center">
                 <!-- Logo e Redes Sociais -->
@@ -102,7 +102,7 @@
                 <!-- Links de Navegação -->
                 <div class="menu col-md-3 mb-4 d-flex flex-column justify-content-center align-items-start">
                     <a href="{% url 'inicio' %}">Início</a>
-                    <a href="#">Receitas</a>    
+                    <a href="#">Categorias</a>    
                     <a href="#">Sobre</a>
                 </div>
 
@@ -123,8 +123,7 @@
 
             <!-- Footer Bottom -->
             <div class="footer-bottom text-center">
-                <p class="mb-1">©2025 | Desenvolvido por Giselle Souza Novaes de Sá</p>
-                <p class="mb-0">Projeto acadêmico orientado pela prof. Yara Regina Pereira Silva Menezes de Sá</p>
+                <p class="mb-1">©2025 | Desenvolvido por Giselle Souza Novaes de Sá | Projeto para o Curso Fic DJANGO</p>
             </div>
         </div>
     </footer>
