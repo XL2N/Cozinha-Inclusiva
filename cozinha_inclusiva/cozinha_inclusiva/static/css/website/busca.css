@@ -1,12 +1,4 @@
-/* Container principal da busca */
-.busca-container {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 40px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+/* CSS DA PÁGINA DE BUSCA */
 
 /* Cabeçalho da busca */
 .busca-header {
@@ -17,13 +9,13 @@
 
 .busca-label {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: #666;
 }
 
 .busca-termo {
     margin: 5px 0 0 0;
-    font-size: 1.8rem;
+    font-size: 2.1rem;
     font-weight: 600;
     color: var(--marrom-principal);
 }
@@ -39,15 +31,15 @@
 .receita-item {
     display: flex;
     gap: 20px;
-    padding: 20px 0;
-    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--verde-medio);
     text-decoration: none;
     color: inherit;
     transition: background-color 0.2s;
 }
 
 .receita-item:hover {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9;  
 }
 
 .receita-item:last-child {
@@ -58,7 +50,7 @@
 .receita-imagem {
     flex-shrink: 0;
     width: 180px;
-    height: 120px;
+    height: 150px;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -78,24 +70,25 @@
 }
 
 .receita-titulo {
-    margin: 0;
-    font-size: 1.5rem;
-    font-style: italic;
+    margin-top: 10px;
+    font-size: 2.2rem;
+    font-family: 'Dancing Script', cursive;
     font-weight: 500;
     color: var(--marrom-principal);
 }
 
 .receita-descricao {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     line-height: 1.6;
-    color: #555;
+    color: var(--texto-neutro);
 }
 
 .receita-restricoes {
     margin-top: auto;
-    font-size: 0.9rem;
-    color: #333;
+    font-size: 1.1rem;
+    color: var(--verde-escuro);
+    margin-bottom: 10px;
 }
 
 .receita-restricoes strong {

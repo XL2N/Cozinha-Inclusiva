@@ -112,6 +112,7 @@
 .filters-section {
     background-color: var(--bege);
     padding: 2rem 0;
+    border: none;
 }
 
 .filters-wrapper {
@@ -133,6 +134,20 @@
     transition: all 0.3s ease-in-out;
     padding: 0.4rem 0.8rem;
     border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+.filter-item input[type="checkbox"] {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.filter-item input[type="checkbox"]:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .filter-item i {

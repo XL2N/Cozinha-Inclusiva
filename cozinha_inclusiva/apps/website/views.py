@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
+from django.contrib import messages
 from apps.receitas.models import Receita
 from apps.categorias.models import Categoria
-from .forms import BuscaForm
+from apps.comentarios.models import Comentario
+from .forms import BuscaForm, ComentarioForm
 
 # Create your views here.
 
@@ -35,8 +37,27 @@ def receita_selecionada(request, receita_id):
     receita.visualizacoes += 1
     receita.save()
 
+    # Processar formulário de comentário
+    if request.method == 'POST' and request.user.is_authenticated:
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.receita = receita
+            comentario.usuario = request.user
+            comentario.save()
+            messages.success(request, 'Comentário adicionado com sucesso!')
+            return redirect('receita_selecionada', receita_id=receita.id)
+    else:
+        form = ComentarioForm()
+
+    # Buscar comentários da receita
+    comentarios = receita.comentarios.all().order_by('-data_hora')
+
     context = {
         'receita': receita,
+        'comentarios': comentarios,
+        'form': form,
+        'total_comentarios': comentarios.count(),
     }
 
     return render(request, 'website/receita.html', context)

@@ -1,0 +1,86 @@
+{% load static %}
+
+<!-- Modal de Imagens -->
+<div id="imageModal" class="image-modal" onclick="closeModalOnOutsideClick(event)">
+    <div class="container-modal">
+
+        <span class="close-modal" onclick="closeImageModal()">&times;</span>
+
+        <div class="slide-counter" id="slideCounter"> position / max-length </div>
+
+        <div class="modal-content-wrapper">
+            <button class="carousel-btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
+
+            <div class="carousel-container">
+                <div class="carousel-slide active">
+                    {% if receita.imagem_capa %}
+                    <img src="{{ receita.imagem_capa.url }}" alt="{{ receita.titulo }}">
+                    {% else %}
+                    <img src="{% static 'image/default/default_recipe.png' %}" alt="Imagem padrão">
+                    {% endif %}
+                </div>
+
+                {% for i in "123" %}
+                <div class="carousel-slide">
+                    <img src="{% static 'image/default/default_recipe.png' %}" alt="Imagem {{ forloop.counter }}">
+                </div>
+                {% endfor %}
+            </div>
+
+            <button class="carousel-btn next-btn" onclick="changeSlide(1)">&#10095;</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentSlide = 0;
+
+    function openImageModal(slideIndex) {
+        const modal = document.getElementById('imageModal');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        showSlide(slideIndex);
+    }
+
+    function closeImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    function closeModalOnOutsideClick(event) {
+        if (event.target.id === 'imageModal') {
+            closeImageModal();
+        }
+    }
+
+    function showSlide(index) {
+        const slides = document.querySelectorAll('.carousel-slide');
+
+        if (index >= slides.length) {
+            currentSlide = 0;
+        } else if (index < 0) {
+            currentSlide = slides.length - 1;
+        } else {
+            currentSlide = index;
+        }
+
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[currentSlide].classList.add('active');
+
+        // Atualizar contador
+        const counter = document.getElementById('slideCounter');
+        counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+    }
+
+    function changeSlide(direction) {
+        showSlide(currentSlide + direction);
+    }
+
+    // Fechar com ESC
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeImageModal();
+        }
+    });
+</script>

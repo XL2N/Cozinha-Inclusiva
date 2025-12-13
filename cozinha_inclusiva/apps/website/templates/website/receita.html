@@ -7,25 +7,48 @@
 {% endblock %}
 
 {% block content %}
-<div class="m-5 p-5 rounded-4 shadow-sm bg-white mx-auto position-relative" style="max-width: 1400px;">
-    
-    <a href="javascript:history.back()" class="btn-voltar-receita" title="Voltar">
-        <i class="fa-solid fa-arrow-left"></i>
-    </a>
+<div class="m-5 p-5 rounded-4 shadow-sm bg-white mx-auto position-relative" style="max-width: 1220px;">
+
+    <!-- Barra Superior: Botão Voltar e Informações -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="javascript:history.back()" class="btn-voltar position-static" title="Voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div class="receita-info-bar-inline d-flex align-items-center gap-3">
+            <div class="info-item-small">
+                <i class="fa-solid fa-eye"></i>
+                <span>{{ receita.visualizacoes }}</span>
+            </div>
+            
+            <button class="btn-action-small btn-curtir" onclick="curtirReceita()" title="Curtir">
+                <i class="fa-regular fa-heart"></i>
+                <span id="curtidas-count">0</span>
+            </button>
+            
+            <button class="btn-action-small btn-compartilhar" onclick="compartilharReceita()" title="Compartilhar">
+                <i class="fa-solid fa-share-nodes"></i>
+            </button>
+        </div>
+    </div>
 
     <div class="row">
-        <!-- Coluna Esquerda - Informações da Receita -->
-        <div class="col-lg-7">
+        <!-- COLUNA DA ESQUERDA - Informações da Receita -->
+        <div class="col-lg-7 mt-2">
             <h1 class="receita-titulo">{{ receita.titulo }}</h1>
-            <p class="receita-subtitulo">Essa receita não contém Carne</p>
-            
+            <div class="tags-categorias">
+                {% for cat in receita.categoria.all %}
+                <span class="tag-categoria">{{ cat.nome }}</span>
+                {% endfor %}
+            </div>
+
             <p class="receita-descricao">{{ receita.descricao }}</p>
 
             <!-- Ingredientes -->
             <h2 class="secao-titulo-receita">Ingredientes</h2>
             <ul class="ingredientes-lista">
                 {% for item in receita.receitaingrediente_set.all %}
-                <li>{{ item.quantidade }} {{ item.unidade_medida }} {{ item.ingrediente.nome }}</li>
+                <li>{{ item.ingrediente.nome }} ( {{ item.quantidade }} {{ item.unidade_medida }} )</li>
                 {% endfor %}
             </ul>
 
@@ -40,19 +63,21 @@
             <!-- Referência -->
             {% if receita.referencia %}
             <div class="receita-referencia">
-                <small><strong>REFERÊNCIA:</strong> <a href="{{ receita.referencia }}" target="_blank">{{ receita.referencia }}</a></small>
+                <small><strong>REFERÊNCIA:</strong> <a href="{{ receita.referencia }}" target="_blank">{{
+                        receita.referencia }}</a></small>
             </div>
             {% endif %}
         </div>
 
-        <!-- Coluna Direita - Imagens e Comentários -->
-        <div class="col-lg-5">
+        <!-- COLUNA DA DIREITA - Imagens e Comentários -->
+        <div class="col-lg-5 mt-2">
             <!-- Imagem Principal -->
-            <div class="receita-imagem-principal mb-3">
+            <div class="receita-imagem-principal mb-3 " onclick="openImageModal(0)" style="cursor: pointer;">
                 {% if receita.imagem_capa %}
                 <img src="{{ receita.imagem_capa.url }}" alt="{{ receita.titulo }}" class="img-fluid rounded">
                 {% else %}
-                <img src="{% static 'image/default/default_recipe.png' %}" alt="Imagem padrão" class="img-fluid rounded">
+                <img src="{% static 'image/default/default_recipe.png' %}" alt="Imagem padrão"
+                    class="img-fluid rounded">
                 {% endif %}
             </div>
 
@@ -60,38 +85,151 @@
             <div class="row g-2 mb-4">
                 {% for i in "123" %}
                 <div class="col-4">
-                    <div class="receita-imagem-pequena">
-                        <img src="{% static 'image/default/default_recipe.png' %}" alt="Imagem {{ forloop.counter }}" class="img-fluid rounded">
+                    <div class="receita-imagem-pequena" onclick="openImageModal({{ forloop.counter }})"
+                        style="cursor: pointer;">
+                        <img src="{% static 'image/default/default_recipe.png' %}" alt="Imagem {{ forloop.counter }}"
+                            class="img-fluid rounded">
                     </div>
                 </div>
                 {% endfor %}
             </div>
 
             <!-- Comentários -->
-            <h3 class="comentarios-titulo">Comentários</h3>
-            <p class="text-muted small mb-3">Faça seu comentário também...</p>
+            <div class="comentarios-secao">
+                <div class="comentarios-header">
+                    <h3 class="comentarios-titulo">Comentários ({{ total_comentarios }})</h3>
+                </div>
 
-            <div class="comentarios-lista">
-                {% for comentario in receita.comentarios.all|slice:":7" %}
-                <div class="comentario-item">
-                    <div class="comentario-usuario">
-                        <i class="fa-solid fa-user-circle"></i>
-                        <span>{{ comentario.usuario.username }}</span>
-                    </div>
-                    <p class="comentario-texto">{{ comentario.texto }}</p>
+                <!-- Formulário de Comentário -->
+                {% if user.is_authenticated %}
+                <div class="comentario-form-wrapper mb-4">
+                    <form method="post" class="comentario-form">
+                        {% csrf_token %}
+                        {{ form.texto }}
+                        <button type="submit" class="btn btn-comentar mt-2">
+                            <i class="fa-solid fa-paper-plane"></i> Enviar Comentário
+                        </button>
+                    </form>
                 </div>
-                {% empty %}
-                <div class="comentario-item">
-                    <div class="comentario-usuario">
-                        <i class="fa-solid fa-user-circle"></i>
-                        <span>Usuario001</span>
-                    </div>
-                    <p class="comentario-texto">Seja o primeiro a comentar!</p>
+                {% else %}
+                <div class="alert alert-info mb-4">
+                    <i class="fa-solid fa-info-circle"></i> 
+                    <a href="{% url 'login' %}">Faça login</a> para deixar seu comentário!
                 </div>
-                {% endfor %}
+                {% endif %}
+
+                <!-- Lista de Comentários -->
+                <div class="comentarios-lista">
+                    {% for comentario in comentarios %}
+                    <div class="comentario-item">
+                        <div class="comentario-header-info">
+                            <div class="comentario-usuario">
+                                <i class="fa-solid fa-user-circle"></i>
+                                <span>{{ comentario.usuario.username|default:"Usuário Anônimo" }}</span>
+                            </div>
+                            <small class="comentario-data">{{ comentario.data_hora|timesince }} atrás</small>
+                        </div>
+                        <p class="comentario-texto">{{ comentario.texto }}</p>
+                    </div>
+                    {% empty %}
+                    <div class="comentario-vazio">
+                        <i class="fa-regular fa-comment-dots"></i>
+                        <p>Seja o primeiro a comentar sobre esta receita!</p>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 
 </div>
+
+{% include 'website/modais/modal_fotos.html' %}
+
+<script>
+    // Função para curtir receita
+    function curtirReceita() {
+        {% if not user.is_authenticated %}
+            // Se não estiver logado, redireciona para login
+            if (confirm('Você precisa estar logado para curtir esta receita. Deseja fazer login agora?')) {
+                window.location.href = "{% url 'login' %}?next={{ request.path }}";
+            }
+            return;
+        {% else %}
+        const btn = document.querySelector('.btn-curtir');
+        const icon = btn.querySelector('i');
+        const count = document.getElementById('curtidas-count');
+        let totalCurtidas = parseInt(count.textContent);
+        
+        if (btn.classList.contains('curtido')) {
+            // Remover curtida
+            btn.classList.remove('curtido');
+            icon.classList.remove('fa-solid');
+            icon.classList.add('fa-regular');
+            totalCurtidas--;
+            count.textContent = totalCurtidas;
+            localStorage.setItem('receita_{{ receita.id }}_total_curtidas', totalCurtidas);
+            localStorage.removeItem('receita_{{ receita.id }}_curtida_user_{{ user.id }}');
+        } else {
+            // Adicionar curtida
+            btn.classList.add('curtido');
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa-solid');
+            totalCurtidas++;
+            count.textContent = totalCurtidas;
+            localStorage.setItem('receita_{{ receita.id }}_total_curtidas', totalCurtidas);
+            localStorage.setItem('receita_{{ receita.id }}_curtida_user_{{ user.id }}', 'true');
+        }
+        {% endif %}
+    }
+    
+    // Função para compartilhar receita
+    function compartilharReceita() {
+        const url = window.location.href;
+        const titulo = '{{ receita.titulo|escapejs }}';
+        
+        if (navigator.share) {
+            // Usar API nativa de compartilhamento (mobile)
+            navigator.share({
+                title: titulo,
+                text: 'Confira essa receita incrível!',
+                url: url
+            }).catch(err => console.log('Erro ao compartilhar:', err));
+        } else {
+            // Copiar para clipboard (desktop)
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copiado para a área de transferência!');
+            }).catch(err => {
+                console.log('Erro ao copiar:', err);
+            });
+        }
+    }
+    
+    // Verificar curtidas e carregar contador
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.querySelector('.btn-curtir');
+        const count = document.getElementById('curtidas-count');
+        
+        // Carregar total de curtidas do localStorage (todos podem ver)
+        let totalCurtidas = parseInt(localStorage.getItem('receita_{{ receita.id }}_total_curtidas') || '0');
+        count.textContent = totalCurtidas;
+        
+        {% if user.is_authenticated %}
+        // Verificar se o usuário logado já curtiu
+        const curtido = localStorage.getItem('receita_{{ receita.id }}_curtida_user_{{ user.id }}');
+        if (curtido === 'true') {
+            const icon = btn.querySelector('i');
+            btn.classList.add('curtido');
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa-solid');
+        }
+        {% else %}
+        // Se não estiver logado, mostrar visualmente que precisa login
+        btn.style.opacity = '0.6';
+        btn.title = 'Faça login para curtir';
+        btn.style.cursor = 'not-allowed';
+        {% endif %}
+    });
+</script>
+
 {% endblock %}

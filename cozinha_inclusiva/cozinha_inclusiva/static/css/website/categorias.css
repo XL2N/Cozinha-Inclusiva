@@ -1,3 +1,10 @@
+
+/* Botão de voltar */
+.btn-voltar {
+    top: 3rem;
+    left: 3rem;
+}
+
 /*----- SEÇÃO DE RECEITAS ---- */
 .categoria-titulo {
     font-size: 1.7rem;
