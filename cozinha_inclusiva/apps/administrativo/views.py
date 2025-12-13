@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+def home_adm(request):
+    return render(request, 'administrativo/home.html')
+
+def dashboard(request):
+    return render(request, 'administrativo/dashboard.html')

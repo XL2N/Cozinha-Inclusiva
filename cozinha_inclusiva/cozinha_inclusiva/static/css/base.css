@@ -135,6 +135,41 @@ button:focus {
     color: var(--verde-escuro) !important;
 }
 
+/*----- BOTÕES DE LOGIN/LOGOUT -----*/
+.btn-login {
+    background-color: var(--verde-escuro) !important;
+    color: var(--branco-bg) !important;
+    border: 2px solid var(--verde-escuro) !important;
+    font-weight: 400;
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: var(--branco-bg) !important;
+    border-color: var(--verde-escuro) !important;
+    color: var(--verde-escuro) !important;
+}
+
+.btn-logout {
+    background-color: var(--vermelho-escuro) !important;
+    color: var(--branco-bg) !important;
+    border: 2px solid var(--vermelho-escuro) !important;
+    font-weight: 400;
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: var(--branco-bg) !important;
+    color: var(--vermelho-escuro) !important;
+    border-color: var(--vermelho-escuro) !important;
+}
+
 /*----- BARRA DE BUSCA ---- */
 .search-box {
     position: relative;
