@@ -1,0 +1,70 @@
+/* Customização do Card de Login */
+
+.login-card {
+    border-radius: 15px;
+    border: none;
+    background: var(--branco-bg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);;
+}
+
+.login-titulo {
+    text-align: center;
+    font-weight: 700;
+    color: var(--marrom-principal);
+    font-size: 2rem;
+}
+
+/* Labels */
+.login-card .form-label {
+    color: var(--marrom-principal);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Inputs */
+.login-card .form-control {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    background-color: #f9f9f9;
+}
+
+.login-card .form-control:focus {
+    border-color: #a8d5a8;
+    box-shadow: 0 0 0 0.2rem rgba(168, 213, 168, 0.25);
+    background-color: #fff;
+}
+
+.login-card .form-control::placeholder {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* Botão Entrar */
+.btn-entrar {
+    background-color: var(--verde-claro);
+    border: none;
+    border-radius: 8px;
+    color: var(--branco-bg);
+    font-weight: 600;
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-entrar:hover {
+    background-color: var(--verde-medio);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(168, 213, 168, 0.4);
+    color: var(--branco-bg);
+}
+
+/* Link de cadastro */
+.login-card a {
+    color: var(--verde-claro);
+}
+
+.login-card a:hover {
+    color: var(--verde-medio);
+}

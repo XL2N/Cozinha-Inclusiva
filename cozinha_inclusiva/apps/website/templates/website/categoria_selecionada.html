@@ -7,7 +7,89 @@
 {% endblock %}
 
 {% block content %}
-<div class="text-center my-5 categoria-lista mt-5 py-4 rounded-4 shadow-sm bg-white mx-auto " style="max-width: 1320px;">
-    <h2 class="text-center my-5 fw-bold">Categoria: {{ categoria.nome }}</h2>
+<div class="text-center m-5 p-5 rounded-4 shadow-sm bg-white mx-auto position-relative" style="max-width: 1220px;">
+
+    <a href="{% url 'categorias' %}" class="btn-voltar" title="Voltar para Categorias">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <h2 class="section-title">Categoria: {{ categoria.nome }}</h2>
+
+    <div class="row justify-content-center">
+        {% for receita in receitas %}
+        <div class="col-md-3 mb-3">
+            <a href="{% url 'receita_selecionada' receita.id %}" class="text-decoration-none">
+                <div class="recipe-card">
+                    <!-- IMAGEM CAPA -->
+                    <div class="recipe-image">
+                        {% if receita.imagem_capa %}
+                        <img src="{{ receita.imagem_capa.url }}" alt="{{ receita.titulo }}">
+                        {% else %}
+                        <img src="{% static 'image/default/default_recipe.png' %}" alt="Imagem padrão">
+                        {% endif %}
+                    </div>
+                    <!-- NOME E DESCRIÇÃO -->
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">{{ receita.titulo }}</h3>
+                        <p class="recipe-description">{{ receita.descricao|truncatechars:80 }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-muted">Nenhuma receita encontrada nesta categoria.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Paginação -->
+    {% if receitas.has_other_pages %}
+    <nav aria-label="Navegação de páginas" class="mt-5">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="pagination-info">
+                Página {{ receitas.number }} de {{ receitas.paginator.num_pages }} - {{ total_receitas }} receita{{ total_receitas|pluralize }}
+            </div>
+            <ul class="pagination custom-pagination mb-0">
+                {% if receitas.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ receitas.previous_page_number }}" aria-label="Anterior">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&lt;</span>
+                    </li>
+                {% endif %}
+
+                {% for num in receitas.paginator.page_range %}
+                    {% if receitas.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > receitas.number|add:'-2' and num < receitas.number|add:'2' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if receitas.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ receitas.next_page_number }}" aria-label="Próxima">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&gt;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    {% endif %}
+
 </div>
 {% endblock %}

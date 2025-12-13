@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Count, Q
+from django.core.paginator import Paginator
 from apps.receitas.models import Receita
 from apps.categorias.models import Categoria
 from .forms import BuscaForm
@@ -42,7 +43,7 @@ def receita_selecionada(request, receita_id):
 
 # Categorias view
 def categorias(request):
-    categorias = Categoria.objects.annotate(num_receitas=Count('receitas')).order_by('nome')
+    categorias = Categoria.objects.annotate(num_receitas=Count('receitas_categoria')).order_by('nome')
 
     context = {
         'categorias': categorias,
@@ -53,11 +54,20 @@ def categorias(request):
 # Categoria Selecionada view
 def categoria_selecionada(request, categoria_id):
     categoria = get_object_or_404(Categoria, id=categoria_id)
-    receitas = Receita.objects.filter(categoria=categoria)
+    receitas_list = Receita.objects.filter(categoria=categoria).order_by('-id')
+    
+    # Paginação - 8 receitas por página
+    paginator = Paginator(receitas_list, 8)
+    page_number = request.GET.get('page', 1)
+    receitas = paginator.get_page(page_number)
+    
+    # Contagem total de receitas
+    total_receitas = receitas_list.count()
 
     context = {
         'categoria': categoria,
         'receitas': receitas,
+        'total_receitas': total_receitas,
     }
 
     return render(request, 'website/categoria_selecionada.html', context)
@@ -91,15 +101,3 @@ def busca(request):
     }
 
     return render(request, 'website/busca.html', context)
-
-# Login, Logout e Cadastro de Usuário views
-def login_user(request):
-    return render(request, 'login.html')
-
-def logout_user(request):
-    logout(request)
-    return redirect('inicio')
-
-def cadastro_user(request):
-    return render(request, 'cadastro.html')
-

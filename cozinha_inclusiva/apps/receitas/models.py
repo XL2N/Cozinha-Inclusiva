@@ -9,6 +9,7 @@ class Receita(models.Model):
     data_publicacao = models.DateTimeField(auto_now_add=True, verbose_name="Data de Publicação")
     visualizacoes = models.IntegerField(default=0, verbose_name="Visualizações")
     imagem_capa = models.ImageField(upload_to='receitas/capas/', blank=True, null=True, verbose_name="Imagem de Capa")
+    referencia = models.URLField(max_length=500, blank=True, null=True, verbose_name="Referência")
 
     # Relacionamento M:N com Ingrediente, tabela ReceitaIngrediente
     ingredientes = models.ManyToManyField(
@@ -49,7 +50,7 @@ class Ingrediente(models.Model):
 
 class ReceitaIngrediente(models.Model):
 
-    receita = models.ForeignKey( Receita, on_delete = models.CASCADE, primary_key = True)
+    receita = models.ForeignKey( Receita, on_delete = models.CASCADE)
     ingrediente = models.ForeignKey(Ingrediente, on_delete=models.CASCADE)
     quantidade = models.CharField(max_length=50, verbose_name="Quantidade")
     unidade_medida = models.CharField(max_length=50, verbose_name="Unidade de Medida")

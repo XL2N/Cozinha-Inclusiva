@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('categorias', '0002_remove_categoria_receita_popular_and_more'),
-        ('receitas', '0003_ingrediente_alter_receita_options_and_more'),
+        ('receitas', '0001_initial'),
     ]
 
     operations = [

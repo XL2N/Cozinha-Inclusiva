@@ -1,0 +1,111 @@
+/* CSS DA PAGINA DE SOBRE */
+
+/* SEÇÃO 1: COZINHA */
+.secao-cozinha {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.secao-cozinha-texto {
+    flex: 1;
+}
+
+.secao-cozinha-logo {
+    flex: 1;
+    background-color: var(--verde-claro);
+    padding: 2rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.secao-cozinha-logo img {
+    max-width: 100%;
+    height: auto;
+}
+
+.secao-titulo {
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: var(--verde-escuro);
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.secao-texto {
+    text-align: justify;
+    line-height: 1.7;
+    color: var(--texto-escuro);
+    font-size: 1.2rem;
+}
+
+/* SEÇÃO 2: CHEF */
+.secao-chef {
+    background-color: var(--verde-claro);
+    padding: 2rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.secao-chef-foto {
+    flex: 0 0 430px;
+}
+
+.secao-chef-foto img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.secao-chef-texto {
+    flex: 1;
+    padding-left: 1rem;
+}
+
+.chef-secao-texto {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    text-align: justify;
+    margin-top: 1rem;
+    color: var(--verde-escuro);
+}
+
+.chef-nome {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: var(--verde-escuro);
+    margin-bottom: 1.6rem;
+}
+
+/* SEÇÃO 3: HISTÓRIA */
+.secao-historia {
+    margin-top: 2rem;
+}
+
+.historia-titulo {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: var(--verde-escuro);
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+
+/* RESPOSNSIVIDADE */
+@media (max-width: 768px) {
+    .secao-cozinha,
+    .secao-chef {
+        flex-direction: column;
+    }
+
+    .secao-chef-foto {
+        flex: 1 1 auto;
+    }
+}

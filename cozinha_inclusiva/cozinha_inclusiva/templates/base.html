@@ -45,6 +45,8 @@
                 <img src="{% static 'image/logo_nav.png' %}" alt="Cozinha Inclusiva Logo" width="150"
                     class="d-inline-block align-text-top">
 
+                {% if not request.resolver_match.url_name in 'login cadastro' %}
+
                 <!--Menu de Navegação-->
                 <ul class="navbar-nav d-flex flex-row gap-4 mb-0">
                     <li class="nav-item">
@@ -71,9 +73,17 @@
                     </div>
                 </form>
 
+                {% endif %}
+
+                <!--Login / Logout-->
                 {% if user.is_authenticated %}
+                
                 <a class="btn btn-outline-danger" href="{% url 'logout' %}">
                     <i class="fa-solid fa-right-from-bracket me-1"></i> Sair
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}" class="text-decoration-none" style="font-size: 1.8rem;" title="Login">
+                    <i class="fa-solid fa-user"></i>
                 </a>
                 {% endif %}
 
@@ -82,7 +92,7 @@
     </header>
 
     <!-- Conteudo -->
-    <main class="flex-grow-1">
+    <main class="flex-grow-1 100vh">
         {% block content %}
         {% endblock %}
     </main>
@@ -90,6 +100,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
+            {% if not request.resolver_match.url_name in 'login cadastro' %}
             <div class="row py-4 align-items-center">
                 <!-- Logo e Redes Sociais -->
                 <div class="col-md-3 mb-4 d-flex flex-column align-items-center align-items-md-start justify-content-center">
@@ -122,6 +133,15 @@
                     <p class="mb-0">@cozinha_inclusiva</p>
                 </div>
             </div>
+            {% else %}
+
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <img src="{% static 'image/logo.png' %}" alt="Cozinha Inclusiva Logo" height="100" class="rounded">
+                </div>
+            </div>
+
+            {% endif %}
 
             <!-- Footer Bottom -->
             <div class="footer-bottom text-center">

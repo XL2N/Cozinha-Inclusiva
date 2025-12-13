@@ -3,11 +3,57 @@
 {% load static %}
 
 {% block extra_style %}
-<link rel="stylesheet" href="{% static 'css/website/Categorias.css' %}">
+<link rel="stylesheet" href="{% static 'css/website/sobre.css' %}">
+
+
 {% endblock %}
 
 {% block content %}
-<div class="text-center my-5 categoria-lista mt-5 py-4 rounded-4 shadow-sm bg-white mx-auto " style="max-width: 1320px;">
-    <h2 class="text-center my-5 fw-bold">Sobre a Cozinha Inclusiva</h2>
+<div class="text-center m-5 p-5 rounded-4 shadow-sm bg-white mx-auto" style="max-width: 1220px;">
+    
+    <h2 class="section-title">Sobre Nós</h2>
+
+    <!-- Seção Cozinha Inclusiva -->
+    <div class="secao-cozinha">
+        <div class="secao-cozinha-texto">
+            <h2 class="secao-titulo">Cozinha Inclusiva</h2>
+            <p class="secao-texto">
+                O projeto Cozinha Inclusiva é um site de receitas pensado para pessoas com restrições alimentares, como intolerância à lactose, glúten, carne ou outros ingredientes.
+            </p>
+            <p class="secao-texto">
+                A proposta é reunir receitas criativas e saborosas, com opções que vão desde as mais simples até as mais elaboradas, sempre com foco em valorizar o sabor e respeitar diferentes necessidades alimentares.
+            </p>
+        </div>
+        <div class="secao-cozinha-logo">
+            <img src="{% static 'image/logo.png' %}" alt="Logo Cozinha Inclusiva">
+        </div>
+    </div>
+
+    <!-- Seção Chef Clara Gabrielle -->
+    <div class="secao-chef">
+        <div class="secao-chef-foto">
+            <img src="{% static 'image/chef.png' %}" alt="Chef Clara Gabrielle">
+        </div>
+        <div class="secao-chef-texto">
+            <h3 class="chef-nome">Chef. Clara Gabrielle</h3>
+            <p class="chef-secao-texto">
+                A ideia do Cozinha Inclusiva nasceu quando Clara, que é intolerante à lactose, queria preparar um bolo gostoso que ela mesma pudesse comer. Depois de muita tentativa e erro, ela percebeu que não era a única com essa dificuldade — e que faltava um lugar com receitas acessíveis para todos.
+            </p>
+        </div>
+    </div>
+
+    <!-- Seção Nossa História -->
+    <div class="secao-historia">
+        <h2 class="historia-titulo">Nossa História</h2>
+        <p class="secao-texto">
+            Foi assim que surgiu o Cozinha Inclusiva — um projeto criado com carinho para acolher todos os tipos de restrições alimentares, sem abrir mão do sabor. Aqui, cada receita é pensada para incluir, nunca para excluir. Quer você seja vegano, celíaco, intolerante à lactose ou apenas esteja buscando uma alimentação mais consciente, este espaço é seu.
+        </p>
+        <p class="secao-texto">
+            Nosso objetivo é mostrar que cozinhar com restrições alimentares não precisa ser limitante — pode ser criativo, gostoso e transformador.
+        </p>
+        <p class="secao-texto">
+            Seja bem-vindo à nossa cozinha. 💚
+        </p>
+    </div>
 </div>
 {% endblock %}
