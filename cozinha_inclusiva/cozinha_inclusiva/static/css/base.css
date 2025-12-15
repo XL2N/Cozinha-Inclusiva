@@ -37,6 +37,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     position: relative;
+    padding-top: 80px;
 }
 
 /* Remover bordas de foco em todos os elementos */
@@ -70,6 +71,20 @@ button:focus {
     margin-bottom: 3rem;
 }
 
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
 /*----- BOTÃO VOLTAR ---- */
 .btn-voltar {
     position: absolute;
@@ -97,10 +112,11 @@ button:focus {
 /*----- NAVBAR ---- */
 .navbar-verde {
     background: var(--verde-claro) !important;
-    box-shadow: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding-top: 0.6rem;
     padding-bottom: 0.6rem;
     border: none;
+    z-index: 1030;
 }
 
 .navbar-verde .container {
@@ -133,6 +149,76 @@ button:focus {
 
 .navbar-verde .btn-link:hover {
     color: var(--verde-escuro) !important;
+}
+
+/* Navbar Responsivo */
+@media (max-width: 1199px) {
+    .navbar-verde .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        position: relative;
+    }
+    
+    .navbar-verde .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--verde-claro);
+        padding: 1.5rem;
+        margin-top: 0.5rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+    }
+    
+    .navbar-verde .navbar-nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.3rem !important;
+        margin-bottom: 1rem;
+    }
+    
+    .navbar-verde .navbar-nav .nav-item {
+        width: 100%;
+    }
+    
+    .navbar-verde .navbar-nav .nav-link {
+        padding: 0.85rem 1.2rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        font-size: 1.1rem;
+    }
+    
+    .navbar-verde .navbar-nav .nav-link:hover,
+    .navbar-verde .navbar-nav .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.3);
+        transform: translateX(5px);
+    }
+    
+    .navbar-verde .search-box {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .navbar-verde .search-input {
+        width: 100%;
+    }
+    
+    .navbar-verde .d-flex {
+        width: 100%;
+        justify-content: stretch;
+    }
+    
+    .navbar-verde .btn-login,
+    .navbar-verde .btn-logout {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem;
+        font-size: 1.05rem;
+    }
 }
 
 /*----- BOTÕES DE LOGIN/LOGOUT -----*/
@@ -168,6 +254,14 @@ button:focus {
     background-color: var(--branco-bg) !important;
     color: var(--vermelho-escuro) !important;
     border-color: var(--vermelho-escuro) !important;
+}
+
+@media (max-width: 576px) {
+    .btn-login,
+    .btn-logout {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+    }
 }
 
 /*----- BARRA DE BUSCA ---- */
@@ -215,6 +309,29 @@ button:focus {
     color: var(--verde-escuro);
 }
 
+/* Barra de Busca Responsiva */
+@media (max-width: 991px) {
+    .search-box {
+        width: 100%;
+        margin: 1rem 0;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .search-input {
+        font-size: 0.9rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .search-input::placeholder {
+        font-size: 0.85rem;
+    }
+}
+
 /*----- LINKS ---- */
 a {
     color: var(--lilas-detalhe);
@@ -245,36 +362,47 @@ footer .container {
     margin-bottom: 1rem;
 }
 
+footer .row {
+    gap: 1rem 0;
+}
+
 footer h5 {
     color: var(--texto-preto);
     font-weight: 800;
-    margin-bottom: 1.4rem;
+    margin-bottom: 1.2rem;
     font-size: 1.3rem;
 }
 
 footer a {
     color: var(--texto-preto);
     text-decoration: none;
-    display: inline-block;
-    margin-bottom: 0.5rem;
+    display: block;
+    margin-bottom: 0.6rem;
     transition: color 0.2s;
     font-weight: 600;
-    font-size: 1.1rem;
-    text-align: left;
+    font-size: 1.05rem;
+    line-height: 1.5;
 }
 
 footer .menu a {
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
 }
 
-footer p{
+footer p {
     font-size: 1.0rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.6;
 }
 
 footer a:hover {
     color: var(--verde-escuro);
+}
+
+footer .social-icons {
+    display: flex;
+    gap: 2rem;
 }
 
 footer .social-icons a {
@@ -282,13 +410,142 @@ footer .social-icons a {
     align-items: center;
     justify-content: center;
     font-size: 2rem;
+    margin-bottom: 0;
 }
 
 footer .footer-bottom {
     border-top: 2px solid var(--texto-escuro);
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     padding-top: 1rem;
+    padding-bottom: 0.5rem;
     font-size: 1rem;
     color: var(--texto-escuro);
     font-weight: 600;
+}
+
+footer .footer-bottom p {
+    margin-bottom: 0;
+}
+
+/* Footer Responsivo */
+@media (max-width: 991px) {
+    footer .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    
+    footer .col-md-3,
+    footer .col-lg-3 {
+        margin-bottom: 2rem;
+    }
+    
+    footer .col-md-3:nth-child(3),
+    footer .col-md-3:nth-child(4) {
+        margin-bottom: 2rem;
+    }
+    
+    footer h5 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    
+    footer a {
+        font-size: 1rem;
+    }
+    
+    footer p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    footer .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    footer h5 {
+        font-size: 1.15rem;
+        margin-bottom: 1rem;
+    }
+    
+    footer a {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    footer .menu a {
+        font-size: 1rem;
+    }
+    
+    footer p {
+        font-size: 0.9rem;
+    }
+    
+    footer .social-icons {
+        gap: 1.5rem;
+    }
+    
+    footer .social-icons a {
+        font-size: 1.75rem;
+    }
+    
+    footer .footer-bottom {
+        font-size: 0.85rem;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    footer .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    footer .col-lg-3,
+    footer .col-md-6,
+    footer .col-sm-6 {
+        text-align: center !important;
+        align-items: center !important;
+        margin-bottom: 2rem;
+    }
+    
+    footer .col-lg-3:last-child,
+    footer .col-md-6:last-child {
+        margin-bottom: 1rem;
+    }
+    
+    footer .menu {
+        align-items: center !important;
+    }
+    
+    footer a {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    
+    footer h5 {
+        font-size: 1.1rem;
+        text-align: center;
+        width: 100%;
+    }
+    
+    footer p {
+        font-size: 0.85rem;
+        text-align: center;
+    }
+    
+    footer .social-icons {
+        justify-content: center;
+        gap: 2rem;
+    }
+    
+    footer .social-icons a {
+        font-size: 1.5rem;
+    }
+    
+    footer .footer-bottom {
+        font-size: 0.75rem;
+        padding: 0.75rem 0.5rem 0.5rem;
+    }
 }
