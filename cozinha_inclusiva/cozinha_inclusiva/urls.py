@@ -6,7 +6,6 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.website.urls')),
     path('administrativo/', include('apps.administrativo.urls')),
 
     # Autenticação

@@ -1,0 +1,121 @@
+/* Estilos do Painel Administrativo */
+
+/* Bloqueio Mobile - até 900px */
+.mobile-block {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
+    display: none;
+}
+
+.mobile-show {
+    display: block !important;
+}
+
+.admin-content,
+footer {
+    display: none !important;
+}
+
+@media (min-width: 901px) {
+    .mobile-show {
+        display: none !important;
+    }
+    
+    .admin-content {
+        display: flex !important;
+    }
+    
+    footer {
+        display: block !important;
+    }
+}
+
+.mobile-block i.fa-desktop {
+    color: var(--verde-escuro);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+main.position-relative {
+    display: flex;
+    gap: 1.5rem;
+}
+
+@media (max-width: 1220px) {
+
+}
+
+.sidebar {
+    position: sticky;
+    width: 220px;
+    gap: 1.5rem;
+    min-width: 220px;
+    background-color: var(--branco-bg);
+    padding: 1.5rem 0;
+    min-height: 600px;
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    border-right: 1px solid #e0e0e0;
+    border-radius: 8px;
+    align-self: flex-start;
+}
+
+.sidebar .nav-link {
+    color: var(--verde-escuro);
+    background-color: transparent;
+    padding: 1rem 1.5rem;
+    margin: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    border: none;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(45, 100, 73, 0.08);
+    color: var(--verde-escuro);
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--verde-escuro);
+    color: var(--branco-bg) !important;
+}
+
+.sidebar .nav-link i {
+    width: 24px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.content-area {
+    flex: 1;
+    min-width: 0;
+    max-width: 955px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
