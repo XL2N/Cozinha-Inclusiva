@@ -1,0 +1,57 @@
+# Python
+*.py[cod]
+*$py.class
+*.so
+__pycache__/
+*.pyc
+.Python
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+*.env
+
+# Static files collected
+/static/
+
+# Cache
+.cache/
+*.cache
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Backup files
+*.bak
+*.tmp
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Migrations (opcional - descomente se não quiser versionar)
+# */migrations/*.py
+# !*/migrations/__init__.py
