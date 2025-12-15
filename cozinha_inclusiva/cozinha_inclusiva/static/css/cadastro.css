@@ -1,10 +1,19 @@
 /* Customização do Card de Cadastro */
 
+/* Container de Cadastro */
+.cadastro-container {
+    min-height: calc(100vh - 80px);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
 .cadastro-card {
-    border-radius: 10px;
+    border-radius: 15px;
     border: none;
     background: var(--branco-bg);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .cadastro-titulo {
@@ -66,4 +75,61 @@
 
 .cadastro-card a:hover {
     color: var(--verde-medio);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .cadastro-card {
+        margin-top: 2rem !important;
+    }
+    
+    .cadastro-titulo {
+        font-size: 1.75rem;
+    }
+    
+    .cadastro-card .form-label {
+        font-size: 1rem;
+    }
+    
+    .cadastro-card .form-control {
+        font-size: 1rem;
+        padding: 0.65rem 0.9rem;
+    }
+    
+    .btn-cadastrar {
+        font-size: 1.1rem;
+        padding: 0.65rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .cadastro-card {
+        margin-top: 1rem !important;
+    }
+    
+    .cadastro-titulo {
+        font-size: 1.5rem;
+    }
+    
+    .cadastro-card .form-label {
+        font-size: 0.95rem;
+    }
+    
+    .cadastro-card .form-control {
+        font-size: 0.95rem;
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .btn-cadastrar {
+        font-size: 1rem;
+        padding: 0.6rem;
+    }
+    
+    .cadastro-card .card-body {
+        padding: 2rem 1.5rem !important;
+    }
+    
+    .cadastro-card .form-text {
+        font-size: 0.8rem;
+    }
 }
