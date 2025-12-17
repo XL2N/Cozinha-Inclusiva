@@ -116,6 +116,16 @@ function selecionarReceita(id, titulo, imagemUrl, descricao) {
     modal.hide();
 }
 
+// REMOVE DA LISTA DE SELEÇÃO A RECEITA JÁ ESCOLHIDA PARA ALGUM SLOT
+function removerReceitaDaLista(id) {
+    const cards = document.querySelectorAll('.card-receita-selecao');
+    cards.forEach(card => {
+        if (card.onclick && card.onclick.toString().includes(`selecionarReceita(${id},`)) {
+            card.style.display = 'none';
+        }
+    });
+}
+
 // REMOVER RECEITA DO SLOT
 function removerReceitaDestaque(event, slot) {
     event.preventDefault();
@@ -191,3 +201,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Lista global de receitas já selecionadas
+window.receitasSelecionadas = window.receitasSelecionadas || [];
+
+// Sobrescreve selecionarReceita para bloquear duplicidade
+const _selecionarReceitaOriginal = selecionarReceita;
+selecionarReceita = function(id, titulo, imagemUrl, descricao) {
+    // Bloqueio: se a receita já está em outro slot, não permite
+    if (window.receitasSelecionadas.includes(id)) {
+        const texto = document.getElementById('textoAvisoSlotPreenchido');
+        if (texto) {
+            texto.innerHTML = `Esta receita já foi selecionada em outro destaque!<br>Escolha outra receita ou remova do slot anterior.`;
+        }
+        const modalAviso = new bootstrap.Modal(document.getElementById('modalAvisoSlotPreenchido'));
+        modalAviso.show();
+        return;
+    }
+    window.receitasSelecionadas.push(id);
+    _selecionarReceitaOriginal(id, titulo, imagemUrl, descricao);
+    removerReceitaDaLista(id);
+}
+
+// Ao remover receita do slot, liberar para seleção novamente
+const _removerReceitaDestaqueOriginal = removerReceitaDestaque;
+removerReceitaDestaque = function(event, slot) {
+    // Descobrir id da receita removida
+    const card = document.querySelector(`.card-destaque[data-slot="${slot}"]`);
+    if (card && card.hasAttribute('data-receita-id')) {
+        const id = parseInt(card.getAttribute('data-receita-id'));
+        // Remove da lista global
+        window.receitasSelecionadas = window.receitasSelecionadas.filter(rid => rid !== id);
+        // Reexibir na lista de seleção
+        const cards = document.querySelectorAll('.card-receita-selecao');
+        cards.forEach(cardSel => {
+            if (cardSel.onclick && cardSel.onclick.toString().includes(`selecionarReceita(${id},`)) {
+                cardSel.style.display = '';
+            }
+        });
+    }
+    _removerReceitaDestaqueOriginal(event, slot);
+}
