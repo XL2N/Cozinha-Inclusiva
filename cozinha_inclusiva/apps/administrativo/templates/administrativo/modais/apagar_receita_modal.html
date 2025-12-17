@@ -1,0 +1,45 @@
+<!-- MODAL DE EXCLUIR RECEITA -->
+
+<div class="modal fade" id="modalExcluirReceita" tabindex="-1" aria-labelledby="modalExcluirReceitaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalExcluirReceitaLabel">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <form id="formExcluirReceita" method="post" action="" data-delete-url="{% url 'excluir_receita' 0 %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" id="delete_receita_id" name="receita_id">
+                    
+                    <div class="alert alert-danger d-flex align-items-start">
+                        <i class="fa-solid fa-exclamation-triangle fa-2x me-3 mt-1"></i>
+                        <div>
+                            <h6 class="alert-heading">Atenção!</h6>
+                            <p class="mb-0">Você está prestes a excluir a receita:</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center py-3">
+                        <h5 class="fw-bold text-dark" id="delete_receita_nome"></h5>
+                    </div>
+                    
+                    <p class="text-muted mb-0">
+                        <i class="fa-solid fa-info-circle me-2"></i>
+                        Esta ação não pode ser desfeita. Todos os dados relacionados serão permanentemente removidos.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-times me-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa-solid fa-trash me-2"></i>Sim, Excluir
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

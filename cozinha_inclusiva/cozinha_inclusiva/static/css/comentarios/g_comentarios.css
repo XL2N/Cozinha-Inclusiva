@@ -1,0 +1,22 @@
+/* Styles for Gerenciar Comentários admin page */
+.g-comentarios-container{ padding: 1rem 0 3rem; }
+.g-title{ color:#2f4e2f; font-weight:700; }
+.btn-moderacao{ padding:.5rem 1rem }
+
+.filter-bar .btn-outline-success{ border-color:#2f8a45; color:#2f8a45 }
+.search-form{ max-width:680px; width:100%; }
+.search-input{ border-radius:4px 0 0 4px; border-right:0 }
+.search-btn{ border-radius:0 4px 4px 0; border-left:0; background:#fff }
+
+.comment-card{ display:flex; align-items:center; gap:1rem; border-radius:10px; box-shadow:0 6px 18px rgba(36,37,38,0.06); }
+.comment-card .avatar{ width:56px; height:56px; flex:0 0 56px }
+.comment-card .avatar img{ width:56px; height:56px; object-fit:cover; border-radius:50% }
+.comment-body{ padding-right:0 }
+.link-recipe{ font-weight:700 }
+
+.btn-outline-danger{ border-color:#d9534f; color:#d9534f }
+
+@media (max-width:991.98px){
+  .comment-card{ flex-direction:row }
+  .comment-card .avatar{ width:48px; height:48px }
+}

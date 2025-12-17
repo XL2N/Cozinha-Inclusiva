@@ -1,0 +1,130 @@
+<!-- Modal Receitas em Destaque -->
+<div class="modal fade" id="modalReceitasDestaque" tabindex="-1" aria-labelledby="modalReceitasDestaqueLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalReceitasDestaqueLabel">Receitas em Destaque</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Seção: Carrossel De Destaque Principal -->
+
+                <!-- Botões de Alternância -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="button" class="btn-toggle active" id="btnReceitas" onclick="alternarSecao('receitas')">
+                            <i class="fa-solid fa-utensils me-2"></i>Receitas
+                        </button>
+                        <button type="button" class="btn-toggle" id="btnUploadImagem" onclick="alternarSecao('upload')">
+                            <i class="fa-solid fa-upload me-2"></i>Upload de Imagens
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Seção: Receitas -->
+                <div id="secaoReceitas" class="secao-conteudo">
+                    <h6 class="fw-bold mb-3 text-center">Escolha uma receita</h6>
+                    <div class="row g-3 justify-content-center">
+                                
+                        <!-- 3 slots fixos para receitas -->
+                        {% for i in "012" %}
+                        <div class="col-md-4">
+                            <a href="#" class="card-destaque slot-destaque-vazio text-decoration-none" data-slot="{{ forloop.counter0 }}">
+                                <i class="fa-solid fa-circle-plus icone-destaque mb-3"></i>
+                                <p class="text-muted mb-0 fw-semibold">Adicionar Receita {{ forloop.counter }}</p>
+                            </a>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <!-- Seção: Upload de Imagens -->
+                <div id="secaoUpload" class="secao-conteudo" style="display: none;">
+                    <h6 class="fw-bold mb-3 text-center">Fazer Upload de Imagens</h6>
+                    <div class="row g-3">
+
+                        <!-- 3 slots fixos para upload de imagens -->
+                        {% for i in "012" %}
+                        <div class="col-md-4">
+                            <div class="card-destaque" onclick="document.getElementById('uploadInput{{ forloop.counter }}').click()">
+                                
+                                <input type="file" id="uploadInput{{ forloop.counter }}" class="d-none" accept="image/*" onchange="previewImage(this, {{ forloop.counter0 }})">
+                                
+                                <div class="upload-content" id="uploadContent{{ forloop.counter }}">
+                                    <i class="fa-solid fa-cloud-arrow-up icone-destaque mb-3"></i>
+                                    <p class="mb-1 fw-semibold">Clique para fazer upload</p>
+                                    <p class="text-muted small mb-0">Imagem {{ forloop.counter }} do carrossel</p>
+                                </div>
+
+                                <div class="preview-image-container" id="previewContainer{{ forloop.counter }}" style="display: none;">
+                                    <img id="previewImg{{ forloop.counter }}" src="" alt="Preview" class="preview-img">
+                                    <button type="button" class="btn-remove" onclick="event.stopPropagation(); removerImagem({{ forloop.counter0 }})">
+                                        <i class="fa-solid fa-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Seção: Pré Visualização -->
+                <div class="mt-4">
+                    <h6 class="fw-bold mb-3 text-center">Pré-visualização do Carrossel</h6>
+                    <div class="preview-container d-flex justify-content-center align-items-center">
+                        <div id="carrosselPreview" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+
+                                <!-- 3 slides fixos para pré-visualização -->
+                                {% for i in "012" %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="carousel-slide-placeholder">
+                                        <span class="text-muted fw-semibold">Slide {{ forloop.counter }} do Carrossel</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carrosselPreview" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carrosselPreview" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Próximo</span>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção: Botão Salvar -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-save" onclick="salvarReceitasDestaque()">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Aviso de Slot Preenchido -->
+<div class="modal fade" id="modalAvisoSlotPreenchido" tabindex="-1" aria-labelledby="modalAvisoSlotPreenchidoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title" id="modalAvisoSlotPreenchidoLabel">Atenção</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fa-solid fa-triangle-exclamation fa-2x text-warning mb-3"></i>
+        <p id="textoAvisoSlotPreenchido" class="mb-0">Este slot já está preenchido!<br>Para adicionar uma nova receita ou imagem, remova o conteúdo atual clicando no botão X.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

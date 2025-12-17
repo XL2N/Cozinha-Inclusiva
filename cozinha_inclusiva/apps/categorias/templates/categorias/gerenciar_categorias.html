@@ -7,10 +7,106 @@
 {% endblock %}
 
 {% block content %}
+<div class="g-categorias-container">
 
-<div class="container">
-    <h1 class="mt-5 mb-5">Bem-vindo ao Painel de Gerenciar Categorias</h1>
-    <p>Aqui você pode Ver, Criar, Editar e Apagar as categorias do sistema.</p>   
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="g-title">Gerenciar Categorias</h2>
+            <p class="text-muted small mb-0">Visualize e administre as categorias do site</p>
+        </div>
+        <div>
+            <a href="#" class="btn btn-success btn-nova"><i class="fa-solid fa-plus me-2"></i>Nova Categoria</a>
+        </div>
+    </div>
+
+    <!-- Lista de categorias -->
+    <div class="categories-list">
+
+        <div class="category-row card mb-3 p-3 d-flex align-items-center">
+            <div class="form-check me-3">
+                <input class="form-check-input" type="checkbox" value="" id="cat1">
+            </div>
+            <div class="cat-title me-4">
+                <strong>Sem Lactose</strong>
+            </div>
+            <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
+                <div><div class="stat-label">Visualizações</div><div class="stat-value">1350</div></div>
+                <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">Quiche Vegetariana</div></div>
+                <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">22</div></div>
+                <div><div class="stat-label">Data de Criação</div><div class="stat-value">10/06/2025</div></div>
+            </div>
+            <div class="ms-3">
+                <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
+            </div>
+        </div>
+
+        <div class="category-row card mb-3 p-3 d-flex align-items-center">
+            <div class="form-check me-3">
+                <input class="form-check-input" type="checkbox" value="" id="cat2">
+            </div>
+            <div class="cat-title me-4">
+                <strong>Sem Glúten</strong>
+            </div>
+            <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
+                <div><div class="stat-label">Visualizações</div><div class="stat-value">956</div></div>
+                <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">Bolo de Laranja</div></div>
+                <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">15</div></div>
+                <div><div class="stat-label">Data de Criação</div><div class="stat-value">10/06/2025</div></div>
+            </div>
+            <div class="ms-3">
+                <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
+            </div>
+        </div>
+
+        <div class="category-row card mb-3 p-3 d-flex align-items-center">
+            <div class="form-check me-3">
+                <input class="form-check-input" type="checkbox" value="" id="cat3">
+            </div>
+            <div class="cat-title me-4">
+                <strong>Sem Carne</strong>
+            </div>
+            <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
+                <div><div class="stat-label">Visualizações</div><div class="stat-value">1025</div></div>
+                <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">Lasanha de Berinjela</div></div>
+                <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">10</div></div>
+                <div><div class="stat-label">Data de Criação</div><div class="stat-value">10/06/2025</div></div>
+            </div>
+            <div class="ms-3">
+                <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
+            </div>
+        </div>
+
+        <div class="category-row card mb-3 p-3 d-flex align-items-center">
+            <div class="form-check me-3">
+                <input class="form-check-input" type="checkbox" value="" id="cat4">
+            </div>
+            <div class="cat-title me-4">
+                <strong>Baixo Açúcar</strong>
+            </div>
+            <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
+                <div><div class="stat-label">Visualizações</div><div class="stat-value">859</div></div>
+                <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">Torta de Limão</div></div>
+                <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">19</div></div>
+                <div><div class="stat-label">Data de Criação</div><div class="stat-value">10/06/2025</div></div>
+            </div>
+            <div class="ms-3">
+                <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bulk actions -->
+    <div class="d-flex align-items-center justify-content-between mt-3">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="selectAll">
+            <label class="form-check-label ms-2" for="selectAll">Selecionar Todas</label>
+        </div>
+        <div>
+            <button class="btn btn-danger"><i class="fa-solid fa-trash me-2"></i>Apagar</button>
+        </div>
+    </div>
+
 </div>
 
 {% endblock %}

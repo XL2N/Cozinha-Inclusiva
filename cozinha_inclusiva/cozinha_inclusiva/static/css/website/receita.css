@@ -245,7 +245,7 @@
     position: absolute;
     top: 20px;
     right: 250px;
-    color: var(--branco-bg);
+    color: var(--branco);
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;

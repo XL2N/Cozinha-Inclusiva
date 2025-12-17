@@ -175,7 +175,7 @@
 /*----- SEÇÃO DE RECEITAS ---- */
 .recipes-section {
     padding: 3rem 0;
-    background-color: var(--branco-bg);
+    background-color: var(--branco);
 }
 
 .recipes-section .container {

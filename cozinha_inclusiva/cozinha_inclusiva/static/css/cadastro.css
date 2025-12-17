@@ -10,7 +10,7 @@
 .cadastro-card {
     border-radius: 15px;
     border: none;
-    background: var(--branco-bg);
+    background: var(--branco);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     padding-left: 1rem;
     padding-right: 1rem;
@@ -54,7 +54,7 @@
     background-color: var(--verde-claro);
     border: none;
     border-radius: 8px;
-    color: var(--branco-bg);
+    color: var(--branco);
     font-weight: 600;
     padding: 0.75rem;
     font-size: 1.2rem;
@@ -65,7 +65,7 @@
     background-color: var(--verde-medio);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(168, 213, 168, 0.4);
-    color: var(--branco-bg);
+    color: var(--branco);
 }
 
 /* Link de login */

@@ -8,9 +8,179 @@
 
 {% block content %}
 
-<div class="container">
-    <h1 class="mt-5 mb-5">Bem-vindo ao Painel de Dashboard</h1>
-    <p>Aqui você pode obter insights e ter uma visão geral  do sistema.</p>   
+<div class="dashboard-container">
+
+    <div class="mb-3 d-flex align-items-center justify-content-between">
+        <!-- TITULO DA PÁGINA -->
+        <h2 class="titulo-adm">Visão Geral</h2>
+
+        <!-- FILTRO DE DATA -->
+        <div class="dropdown">
+            <button class="btn-action dropdown-toggle" type="button" id="filtroDataDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Último mês
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="filtroDataDropdown">
+                <li><a class="dropdown-item" href="#">Última semana</a></li>
+                <li><a class="dropdown-item" href="#">Último mês</a></li>
+                <li><a class="dropdown-item" href="#">Último ano</a></li>
+                <li><a class="dropdown-item" href="#">Tudo</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Top Metrics -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card metric-card">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div
+                        class="metric-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-utensils fa-lg"></i>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div>
+                        <small class="text-muted">Receitas</small>
+                        <div class="h4 mb-0">1.248</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card metric-card">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div
+                        class="metric-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-eye fa-lg"></i>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div>
+                        <small class="text-muted">Visualizações</small>
+                        <div class="h4 mb-0">9.542</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card metric-card">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div
+                        class="metric-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-star fa-lg"></i>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div>
+                        <small class="text-muted">Avaliações</small>
+                        <div class="h4 mb-0">4.8</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card metric-card">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div
+                        class="metric-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-users fa-lg"></i>
+                    </div>
+                    <div class="metric-divider"></div>
+                    <div>
+                        <small class="text-muted">Usuários</small>
+                        <div class="h4 mb-0">3.204</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Side Widgets -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-lg-8">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h5 class="card-title mb-0">Tendência de Visualizações</h5>
+                        <small class="text-muted">Últimos 30 dias</small>
+                    </div>
+                    <div class="chart-placeholder" id="chart-views">Gráfico (placeholder)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="mb-3">Top Categorias mais curtidas</h6>
+                    <ul class="list-unstyled ranking-list mb-0">
+                        <li><span class="rank">1</span> Sobremesas <span
+                                class="badge bg-light text-dark float-end">320</span></li>
+                        <li><span class="rank">2</span> Pratos Principais <span
+                                class="badge bg-light text-dark float-end">210</span></li>
+                        <li><span class="rank">3</span> Lanches <span
+                                class="badge bg-light text-dark float-end">156</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lower row: Recent items and Calendar -->
+    <div class="row g-4">
+
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Calendário</h6>
+                    <div class="calendar-placeholder">Calendário (placeholder)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Receitas Recentes</h6>
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-hover mb-0">
+                            <thead>
+                                <tr class="text-muted small">
+                                    <th>Título</th>
+                                    <th>Categoria</th>
+                                    <th>Autor</th>
+                                    <th>Visualizações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Receita Exemplo 1</td>
+                                    <td>Sobremesas</td>
+                                    <td>Giselle</td>
+                                    <td>412</td>
+                                </tr>
+                                <tr>
+                                    <td>Receita Exemplo 2</td>
+                                    <td>Pratos Principais</td>
+                                    <td>João</td>
+                                    <td>328</td>
+                                </tr>
+                                <tr>
+                                    <td>Receita Exemplo 3</td>
+                                    <td>Lanches</td>
+                                    <td>Maria</td>
+                                    <td>276</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
 {% endblock %}
