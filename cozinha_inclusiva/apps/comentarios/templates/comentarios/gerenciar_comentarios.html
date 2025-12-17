@@ -7,10 +7,80 @@
 {% endblock %}
 
 {% block content %}
+<div class="g-comentarios-container">
 
-<div class="container">
-    <h1 class="mt-5 mb-5">Bem-vindo ao Painel de Gerenciar Comentários</h1>
-    <p>Aqui você pode Ver, Moderar e Apagar os comentários do sistema.</p>   
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="g-title">Gerenciar Comentários</h2>
+            <p class="text-muted small mb-0">Visualize, modere e remova comentários publicados</p>
+        </div>
+        <div>
+            <a href="#" class="btn btn-success btn-moderacao"><i class="fa-solid fa-bell-slash me-2"></i>Moderação</a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar mb-3 d-flex gap-3 align-items-center">
+        <div class="dropdown">
+            <button class="btn btn-outline-success dropdown-toggle" type="button" id="periodoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Período
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="periodoDropdown">
+                <li><a class="dropdown-item" href="#">Últimos 7 dias</a></li>
+                <li><a class="dropdown-item" href="#">Últimos 30 dias</a></li>
+                <li><a class="dropdown-item" href="#">Tudo</a></li>
+            </ul>
+        </div>
+
+        <form class="search-form d-flex ms-2" method="get" action="{ % url 'gerenciar_comentarios' % }">
+            <input type="search" name="q" class="form-control search-input" placeholder="Buscar por RECEITA ou TERMO...">
+            <button class="btn btn-outline-secondary search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
+
+    <!-- List of comments -->
+    <div class="comments-list">
+
+        {% comment %} Sample items; replace with loop over comentários {% endcomment %}
+        {% for i in "1234567" %}
+        <div class="comment-card card mb-3 p-3 d-flex align-items-center">
+            <div class="avatar me-3">
+                <img src="{% static 'image/avatar_placeholder.png' %}" alt="avatar">
+            </div>
+            <div class="comment-body flex-fill">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>{{ forloop.counter }}º Usuario0001</strong>
+                        <div class="small text-muted">Gostei muito! \(^o^)/ &lt;3</div>
+                    </div>
+                    <div class="text-end small text-muted">
+                        <div>01/08/2025 - 10:50 AM</div>
+                        <div class="link-recipe text-success">Recambele de grão de bico</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ms-3">
+                <a href="#" class="btn btn-outline-danger btn-sm" title="Excluir"><i class="fa-solid fa-trash"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- Pagination and info -->
+    <div class="d-flex align-items-center justify-content-between mt-3">
+        <div class="text-muted small">Página 2 de 7 - 49 comentários totais</div>
+        <nav aria-label="Paginação">
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item"><a class="page-link">‹</a></li>
+                <li class="page-item"><a class="page-link">1</a></li>
+                <li class="page-item active"><a class="page-link">2</a></li>
+                <li class="page-item"><a class="page-link">3</a></li>
+                <li class="page-item"><a class="page-link">›</a></li>
+            </ul>
+        </nav>
+    </div>
+
 </div>
 
 {% endblock %}

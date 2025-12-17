@@ -1,0 +1,21 @@
+/* Styles for Gerenciar Categorias admin page */
+.g-categorias-container{ padding: 1rem 0 3rem; }
+.g-title{ color:#2f4e2f; font-weight:700; }
+.btn-nova{ padding:.5rem 1rem }
+
+.category-row{ display:flex; align-items:center; gap:1rem; border-radius:10px; box-shadow:0 1px 6px rgba(20,20,20,0.04); }
+.cat-title{ min-width:140px; font-size:1.05rem }
+.cat-stats{ align-items:center }
+.cat-stats .stat-label{ font-size:0.75rem; color:#6c757d }
+.cat-stats .stat-value{ font-weight:700 }
+.cat-stats .text-success{ color:#2f8a45 }
+
+.btn-outline-success{ border-color:#2f8a45; color:#2f8a45 }
+
+/* Bulk actions */
+.g-categorias-container .btn-danger{ background:#d9534f; border-color:#d9534f }
+
+@media (max-width: 991.98px){
+  .cat-stats{ display:block }
+  .cat-stats > div{ margin-bottom:.5rem }
+}

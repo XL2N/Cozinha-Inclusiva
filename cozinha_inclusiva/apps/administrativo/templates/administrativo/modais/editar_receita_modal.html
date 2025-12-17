@@ -1,0 +1,43 @@
+<!-- MODAL DE EDITAR RECEITA  -->
+
+<div class="modal fade" id="modalEditarReceita" tabindex="-1" aria-labelledby="modalEditarReceitaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalEditarReceitaLabel">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>Editar Receita
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <form id="formEditarReceita" method="post" action="" data-edit-url="{% url 'editar_receita_rapido' 0 %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" id="edit_receita_id" name="receita_id">
+                    
+                    <div class="mb-3">
+                        <label for="edit_titulo" class="form-label fw-bold">Título da Receita</label>
+                        <input type="text" class="form-control" id="edit_titulo" name="titulo" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit_descricao" class="form-label fw-bold">Descrição</label>
+                        <textarea class="form-control" id="edit_descricao" name="descricao" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="alert alert-info d-flex align-items-center">
+                        <i class="fa-solid fa-info-circle me-2"></i>
+                        <small>Para editar ingredientes, modo de preparo e imagem, use a página de gerenciamento completo.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-times me-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-check me-2"></i>Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

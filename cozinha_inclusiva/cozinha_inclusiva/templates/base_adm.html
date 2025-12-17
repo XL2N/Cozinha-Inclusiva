@@ -59,19 +59,19 @@
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown"
                         style="min-width: 250px;">
                         <li class="px-3 py-2 border-bottom">
-                            <div class="d-flex align-items-center gap-2">
+                            <div class="d-flex align-items-center gap-3">
                                 {% if user.imagem %}
                                 <img src="{{ user.imagem.url }}" alt="{{ user.username }}" class="rounded-circle"
                                     width="50" height="50" style="object-fit: cover;">
                                 {% else %}
-                                <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                                <div class="rounded-circle bg-success d-flex align-items-center justify-content-center"
                                     style="width: 50px; height: 50px;">
                                     <i class="fa-solid fa-user text-white fs-4"></i>
                                 </div>
                                 {% endif %}
                                 <div>
-                                    <div class="fw-bold">{{ user.tipo_usuario|default:"Usuário" }}. {{
-                                        user.get_full_name|default:user.username }}</div>
+                                    <div class="fw-bold text-dark">{{ user.get_full_name|default:user.username }}</div>
+                                    <small class="text-muted">{{ user.tipo_usuario|default:"Administrador" }}</small>
                                 </div>
                             </div>
                         </li>
@@ -117,42 +117,42 @@
 
     <!-- Conteudo Administrativo - Oculto em telas pequenas -->
 
-    <main class="min-vh-100 mt-5 mb-5 rounded-4 shadow-sm bg-white mx-auto position-relative admin-content" style="max-width: 1220px;">
+    <main class="mt-5 mb-5 mx-auto position-relative admin-content" style="width: 1220px;">
         
         <!-- Sidebar -->
         <aside class="sidebar">
-            <nav aria-label="Menu Lateral do Dashboard">
+            <nav aria-label="Menu Lateral Administrativo">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{'% url 'home_adm' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home_adm' %}active{% endif %}" href="{% url 'home_adm' %}">
                             <i class="fa-solid fa-house me-2"></i>
                             Home
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
                             <i class="fa-solid fa-chart-pie me-2"></i>
                             Dashboard
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'gerenciar_receitas' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'gerenciar_receitas' %}active{% endif %}" href="{% url 'gerenciar_receitas' %}">
                             <i class="fa-solid fa-utensils me-2"></i>
                             Receitas
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'gerenciar_categorias' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'gerenciar_categorias' %}active{% endif %}" href="{% url 'gerenciar_categorias' %}">
                             <i class="fa-solid fa-list me-2"></i>
                             Categorias
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'gerenciar_comentarios' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'gerenciar_comentarios' %}active{% endif %}" href="{% url 'gerenciar_comentarios' %}">
                             <i class="fa-solid fa-comments me-2"></i>
                             Comentários
                         </a>
@@ -162,7 +162,24 @@
         </aside>
 
         <!-- Content Area -->
-        <div class="content-area bg-secondary">
+        <div class="content-area">
+            <!-- Mensagens de Feedback -->
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="fa-solid 
+                        {% if message.tags == 'success' %}fa-check-circle
+                        {% elif message.tags == 'error' %}fa-times-circle
+                        {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                        {% else %}fa-info-circle{% endif %} me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
             {% block content %}
 
             {% endblock %}

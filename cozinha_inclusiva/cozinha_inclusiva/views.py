@@ -6,6 +6,14 @@ from .forms import LoginForm, CadastroForm
 
 ### LOGIN ### 
 def login_user(request):
+    # Redireciona usuários autenticados
+    if request.user.is_authenticated:
+        if request.user.tipo_usuario in ['ADMIN', 'AUTOR']:
+            return redirect('home_adm')
+        else:
+            return redirect('inicio')
+    
+    # Caminho feliz do login
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
@@ -32,6 +40,13 @@ def logout_user(request):
 
 ### CADASTRO ###
 def cadastro_user(request):
+    # Redireciona usuários autenticados
+    if request.user.is_authenticated:
+        if request.user.tipo_usuario in ['ADMIN', 'AUTOR']:
+            return redirect('home_adm')
+        else:
+            return redirect('inicio')
+    
     if request.method == "POST":
         form = CadastroForm(request.POST)
         if form.is_valid():

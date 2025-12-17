@@ -1,6 +1,7 @@
 /* Estilos do Painel Administrativo */
 
-/* Bloqueio Mobile - até 900px */
+
+/* BLOQUEIO DE TELAS PEQUENAS - até 900px */
 .mobile-block {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     min-height: 100vh;
@@ -11,8 +12,8 @@
     display: block !important;
 }
 
-.admin-content,
-footer {
+
+.admin-content, footer {
     display: none !important;
 }
 
@@ -46,24 +47,25 @@ footer {
     }
 }
 
+/* LAYOUT MAIN */
+
 main.position-relative {
     display: flex;
-    gap: 1.5rem;
+    gap: 2.5rem;
+    max-width: 1220px !important;
 }
 
-@media (max-width: 1220px) {
-
-}
+/* BARRA DE NAVEGAÇÃO LATERAL */
 
 .sidebar {
     position: sticky;
-    width: 220px;
-    gap: 1.5rem;
-    min-width: 220px;
-    background-color: var(--branco-bg);
-    padding: 1.5rem 0;
-    min-height: 600px;
-    height: calc(100vh - 200px);
+    top: 3rem;
+    width: 230px;
+    min-width: 230px;
+    background-color: var(--branco);
+    padding: 1rem 0;
+    height: 550px;
+    max-height: calc(100vh - 110px);
     overflow-y: auto;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
     border-right: 1px solid #e0e0e0;
@@ -92,7 +94,7 @@ main.position-relative {
 
 .sidebar .nav-link.active {
     background-color: var(--verde-escuro);
-    color: var(--branco-bg) !important;
+    color: var(--branco) !important;
 }
 
 .sidebar .nav-link i {
@@ -102,20 +104,85 @@ main.position-relative {
 }
 
 .content-area {
-    flex: 1;
-    min-width: 0;
-    max-width: 955px;
+    width: 100%;
 }
 
-@media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        top: 0;
-    }
+@media (max-width: 1220px) {
 
     .main-content {
-        margin-left: 0;
+        margin-left: 2rem;
+        margin-right: 2rem;
     }
+}
+
+/* TÍTULOS ADMINISTRATIVO */
+.titulo-adm {
+    color: var(--marrom-escuro);
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+/* BOTÃO DE AÇÃO PADRÃO */
+.btn-action {
+    background: var(--verde-escuro);
+    color: var(--branco);
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+/* MENSAGENS DE FEEDBACK */
+.messages-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+    z-index: 1000;
+}
+
+.messages-container .alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: var(--verde-escuro);
+    border-left: 4px solid var(--verde-claro);
+}
+
+.alert-error,
+.alert-danger {
+    background-color: #f8d7da;
+    color: var(--vermelho-escuro);
+    border-left: 4px solid var(--vermelho-claro);
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: var(--amarelo-escuro);
+    border-left: 4px solid var(--amarelo-medio);
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: var(--azul-escuro);
+    border-left: 4px solid var(--azul-medio);
+}
+
+.alert i {
+    font-size: 1.1rem;
 }

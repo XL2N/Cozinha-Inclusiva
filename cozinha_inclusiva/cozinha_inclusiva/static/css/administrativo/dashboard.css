@@ -1,0 +1,149 @@
+/* Dashboard styles for Administrativo */
+.dashboard-container {
+    padding: 1rem 0 3rem;
+}
+
+.metric-card {
+    border: 0;
+    box-shadow: 0 6px 18px rgba(36, 37, 38, 0.06);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle left accent bar */
+.metric-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 12px;
+    height: 100%;
+    background: rgba(47, 138, 69, 0.12);
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+}
+
+.metric-card .card-body {
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.metric-icon {
+    width: 88px;
+    height: 88px;
+    flex: 0 0 88px;
+    font-size: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent !important;
+}
+
+/* override bootstrap utility classes applied in template */
+.metric-icon.bg-success,
+.metric-icon.bg-primary,
+.metric-icon.bg-warning,
+.metric-icon.bg-danger {
+    background: transparent !important;
+    color: #7fa97a !important;
+}
+
+.metric-icon.rounded-circle {
+    border-radius: 10px !important;
+}
+
+.metric-divider {
+    width: 2px;
+    height: 72px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: 0 20px;
+    border-radius: 1px;
+}
+
+.metric-card small.text-muted {
+    display: block;
+    color: #6c757d
+}
+
+.metric-card .h4 {
+    font-size: 3rem;
+    color: #7fa97a;
+    font-weight: 800;
+    line-height: 1
+}
+
+.metric-card small.text-muted {
+    display: block;
+    color: #7a7a7a
+}
+
+/* make content area more spacious to match mock */
+.metric-card .card-body {
+    gap: 0;
+    padding: 22px 26px
+}
+
+.metric-card>.card-body>div:last-child {
+    text-align: right
+}
+
+.chart-placeholder {
+    background: linear-gradient(180deg, #fff 0%, #f8f9fa 100%);
+    border: 1px dashed rgba(0, 0, 0, 0.06);
+    height: 300px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+.ranking-list li {
+    padding: .55rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.ranking-list li:last-child {
+    border-bottom: 0
+}
+
+.ranking-list .rank {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 6px;
+    background: #f1f3f5;
+    margin-right: .6rem;
+    font-weight: 700;
+    color: #495057
+}
+
+.calendar-placeholder {
+    height: 260px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #fff, #f8f9fa);
+    border: 1px dashed rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d
+}
+
+/* Responsive tweaks */
+@media (max-width: 991.98px) {
+    .dashboard-container {
+        padding: 0.5rem
+    }
+
+    .chart-placeholder {
+        height: 220px
+    }
+
+    .metric-card .h4 {
+        font-size: 1.6rem
+    }
+}

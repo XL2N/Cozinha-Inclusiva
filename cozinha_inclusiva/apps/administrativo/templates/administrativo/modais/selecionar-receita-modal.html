@@ -1,0 +1,55 @@
+{% load static %}
+<!-- Modal Selecionar Receita -->
+<div class="modal fade" id="modalSelecionarReceita" tabindex="-1" aria-labelledby="modalSelecionarReceitaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content 100vh">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSelecionarReceitaLabel">Selecione Abaixo</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Buscar Receita -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Buscar Receita</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="buscarReceitaInput" placeholder="Busque por Receita..." onkeyup="filtrarReceitas()">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fa-solid fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Receitas existentes -->
+                <h6 class="fw-semibold mb-2">Receitas existentes</h6>
+                <div class="row g-3" id="listaReceitas">
+                    {% for receita in receitas %}
+                    <div class="col-md-3 col-sm-6">
+                        {% if receita.imagem_capa %}
+                        <div class="card-receita-selecao" onclick="selecionarReceita({{ receita.id }}, '{{ receita.titulo|escapejs }}', '{{ receita.imagem_capa.url }}', '{{ receita.descricao|escapejs }}')">
+                            <div class="receita-img-container">
+                                <img src="{{ receita.imagem_capa.url }}" alt="{{ receita.titulo }}" class="receita-img">
+                            </div>
+                        {% else %}
+                        <div class="card-receita-selecao" onclick="selecionarReceita({{ receita.id }}, '{{ receita.titulo|escapejs }}', '{% static 'image/default/default_recipe.png' %}', '{{ receita.descricao|escapejs }}')">
+                            <div class="receita-img-container">
+                                <img src="{% static 'image/default/default_recipe.png' %}" alt="{{ receita.titulo }}" class="receita-img">
+                            </div>
+                        {% endif %}
+                            <div class="receita-info">
+                                <h6 class="receita-titulo"> {{ receita.titulo }}</h6>
+                                <p class="receita-descricao">{{ receita.descricao|truncatewords:10 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            <i class="fa-solid fa-info-circle me-2"></i>
+                            Nenhuma receita disponível para seleção.
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

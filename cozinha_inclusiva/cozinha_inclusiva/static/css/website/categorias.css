@@ -19,7 +19,7 @@
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--verde-escuro);
-    background-color: var(--branco-bg);
+    background-color: var(--branco);
     border-radius: 5px;
     text-align: center;
     text-decoration: underline;    
@@ -30,14 +30,14 @@
 
 .btn-ver-mais:hover {
     color: var(--verde-escuro);
-    background-color: var(--branco-bg);
+    background-color: var(--branco);
     border-color: var(--verde-escuro);
     transform: translateY(-2px);
 }
 
 .recipes-section {
     padding: 3rem 0;
-    background-color: var(--branco-bg);
+    background-color: var(--branco);
 }
 
 .recipes-section .container {
@@ -45,7 +45,7 @@
 }
 
 .recipe-card {
-    background: var(--branco-bg);
+    background: var(--branco);
     border: 2px solid var(--verde-claro);
     border-radius: 20px;
     padding: 1rem;

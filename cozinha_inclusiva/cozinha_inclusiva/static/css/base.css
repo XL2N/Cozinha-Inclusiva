@@ -7,13 +7,30 @@
     --verde-claro: #B4D39D;
     --verde-medio: #7B926A;
     --verde-escuro: #1B5E2F;      
-    --branco-bg: #FFFFFF;
+    --branco: #FFFFFF;
+
+    /* Cores de fundo */
     --fundo-claro: #F8F9FA;
     --fundo-neutro: #EEEEEE;
+    --fundo-medio: #CCCCCC;
+
+    /* Cores de texto */
     --texto-escuro: #1E1E1E;
     --texto-neutro: #737373;
     --texto-preto: #000000;
-    --vermelho-escuro: #A80000;
+
+    /* Cores de alerta */
+    --vermelho-claro: #dc3545;
+    --vermelho-medio: #A80000;
+    --vermelho-escuro: #721c24;
+
+    --amarelo-claro: #efdc9d;
+    --amarelo-medio: #ffc107;
+    --amarelo-escuro: #856404;
+
+    --azul-claro: #a2d9e3;
+    --azul-medio: #17a2b8;
+    --azul-escuro: #0c5460;
 }
 
 * {
@@ -28,6 +45,28 @@ body, html {
     height: 100%;
     scroll-behavior: smooth;
     overflow-x: hidden;
+}
+
+html {
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+
+html::-webkit-scrollbar {
+    width: 8px;
+}
+
+html::-webkit-scrollbar-track {
+    background: var(--fundo-claro);
+}
+
+html::-webkit-scrollbar-thumb {
+    background: var(--verde-medio);
+    border-radius: 4px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+    background: var(--verde-escuro);
 }
 
 /*----- BASE ---- */
@@ -224,7 +263,7 @@ button:focus {
 /*----- BOTÕES DE LOGIN/LOGOUT -----*/
 .btn-login {
     background-color: var(--verde-escuro) !important;
-    color: var(--branco-bg) !important;
+    color: var(--branco) !important;
     border: 2px solid var(--verde-escuro) !important;
     font-weight: 400;
     font-size: 1rem;
@@ -234,15 +273,15 @@ button:focus {
 }
 
 .btn-login:hover {
-    background-color: var(--branco-bg) !important;
+    background-color: var(--branco) !important;
     border-color: var(--verde-escuro) !important;
     color: var(--verde-escuro) !important;
 }
 
 .btn-logout {
-    background-color: var(--vermelho-escuro) !important;
-    color: var(--branco-bg) !important;
-    border: 2px solid var(--vermelho-escuro) !important;
+    background-color: var(--vermelho-medio) !important;
+    color: var(--branco) !important;
+    border: 2px solid var(--vermelho-medio) !important;
     font-weight: 400;
     font-size: 1rem;
     padding: 6px 12px;
@@ -251,9 +290,9 @@ button:focus {
 }
 
 .btn-logout:hover {
-    background-color: var(--branco-bg) !important;
-    color: var(--vermelho-escuro) !important;
-    border-color: var(--vermelho-escuro) !important;
+    background-color: var(--branco) !important;
+    color: var(--vermelho-medio) !important;
+    border-color: var(--vermelho-medio) !important;
 }
 
 @media (max-width: 576px) {
