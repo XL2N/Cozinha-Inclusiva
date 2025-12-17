@@ -1,16 +1,16 @@
 # Python
-*.py[cod]
-*$py.class
-*.so
-__pycache__/
-*.pyc
-.Python
+# *.py[cod]
+# *$py.class
+# *.so
+# __pycache__/
+# *.pyc
+# .Python
 
 # Django
 *.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+# local_settings.py
+# db.sqlite3
+# db.sqlite3-journal
 
 # Virtual Environment
 venv/
@@ -32,11 +32,11 @@ ENV/
 *.env
 
 # Static files collected
-/static/
+# /static/
 
 # Cache
-.cache/
-*.cache
+# .cache/
+# *.cache
 
 # Testing
 .coverage
