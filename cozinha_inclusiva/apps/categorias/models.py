@@ -31,6 +31,12 @@ class Categoria(models.Model):
         total_views = self.receitas.aggregate(Sum('visualizacoes'))['visualizacoes__sum']
         return total_views or 0
 
+    @property
+    def curtidas_total(self):
+        """Calcula a soma de curtidas de todas as receitas vinculadas à categoria."""
+        total_likes = self.receitas.aggregate(Sum('curtidas'))['curtidas__sum']
+        return total_likes or 0
+
     class Meta:
         verbose_name = "Categoria"
         verbose_name_plural = "Categorias"

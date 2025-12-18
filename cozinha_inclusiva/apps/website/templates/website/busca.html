@@ -9,13 +9,31 @@
 {% block content %}
 <div class="m-5 p-5 rounded-4 shadow-sm bg-white mx-auto position-relative" style="max-width: 1220px;">
 
-    <!-- Título da Busca -->
-    <div class="busca-header">
+
+    <!-- Título da Busca e Filtros -->
+    <div class="busca-header mb-4">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-4">
+                {{ form.termo.label_tag }}
+                {{ form.termo }}
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">{{ form.sem_lactose }} {{ form.sem_lactose.label_tag }}</div>
+                <div class="form-check">{{ form.sem_gluten }} {{ form.sem_gluten.label_tag }}</div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">{{ form.vegano }} {{ form.vegano.label_tag }}</div>
+                <div class="form-check">{{ form.vegetariano }} {{ form.vegetariano.label_tag }}</div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success">Filtrar</button>
+            </div>
+        </form>
         {% if termo %}
-        <p class="busca-label">Tudo que encontramos por:</p>
+        <p class="busca-label mt-3">Tudo que encontramos por:</p>
         <h2 class="busca-termo">{{ termo }}</h2>
         {% else %}
-        <p class="busca-label">Buscar Receitas</p>
+        <p class="busca-label mt-3">Buscar Receitas</p>
         <h2 class="busca-termo">Digite o nome de uma receita, ingrediente ou categoria</h2>
         {% endif %}
     </div>

@@ -10,14 +10,14 @@
 <div class="g-receitas-container">
 
     <div class="d-flex align-items-center justify-content-between mb-4">
+            <h2 class="titulo-adm">Gerenciar Receitas</h2>
         <div>
-            <h2 class="g-title">Gerenciar Receitas</h2>
-            <p class="text-muted small mb-0">Gerencie, edite e organize as receitas do sistema</p>
-        </div>
-        <div>
-            <a href="#" class="btn btn-success btn-nova"><i class="fa-solid fa-plus me-2"></i>Nova Receita</a>
+            <a href="" class="btn btn-success btn-nova" data-bs-toggle="modal" data-bs-target="#modalAdicionarReceita"><i class="fa-solid fa-plus me-2"></i>Nova Receita</a>
         </div>
     </div>
+
+
+
 
     <!-- Filters -->
     <div class="filter-bar mb-4 d-flex flex-column flex-md-row gap-3 align-items-center">
@@ -135,5 +135,8 @@
     </div>
 
 </div>
+<!-- M -->
+    {% include 'receitas/modais/adicionar_receita_modal.html' %}
+
 
 {% endblock %}
