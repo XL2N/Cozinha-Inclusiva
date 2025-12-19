@@ -1,5 +1,7 @@
 /* CSS para Preview de Upload de Imagens e Carrossel */
 
+/* UPLOAD DE IMAGENS */
+
 .upload-content {
     text-align: center;
     color: var(--verde-escuro);
@@ -51,7 +53,12 @@
     transform: scale(1.1);
 }
 
-/* Carrossel Preview */
+/* PRÉ-VISUALIZAÇÃO DO CARROSSEL */
+
+.preview-container {
+    width: 100%;
+}
+
 #carrosselPreview {
     width: 937px;
     height: 350px;
@@ -112,7 +119,8 @@
     text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7);
 }
 
-/* Slide de Destaque (Receita) */
+/* SLIDE DESTAQUE (Receita) */
+
 .carousel-slide-destaque {
     width: 100%;
     height: 100%;

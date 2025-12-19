@@ -37,16 +37,24 @@ def receita_selecionada(request, receita_id):
     receita.visualizacoes += 1
     receita.save()
 
-    # Processar formulário de comentário
+    # Lista de palavras ofensivas (pode ser expandida)
+    PALAVRAS_PROIBIDAS = [
+        'palavrão1', 'palavrão2', 'idiota', 'burro', 'estúpido', 'otário', 'imbecil', 'palavraofensiva'
+    ]
+
     if request.method == 'POST' and request.user.is_authenticated:
         form = ComentarioForm(request.POST)
         if form.is_valid():
-            comentario = form.save(commit=False)
-            comentario.receita = receita
-            comentario.usuario = request.user
-            comentario.save()
-            messages.success(request, 'Comentário adicionado com sucesso!')
-            return redirect('receita_selecionada', receita_id=receita.id)
+            texto = form.cleaned_data['texto'].lower()
+            if any(p in texto for p in PALAVRAS_PROIBIDAS):
+                messages.error(request, 'Seu comentário contém termos ofensivos e não foi enviado.')
+            else:
+                comentario = form.save(commit=False)
+                comentario.receita = receita
+                comentario.usuario = request.user
+                comentario.save()
+                messages.success(request, 'Comentário adicionado com sucesso!')
+                return redirect('receita_selecionada', receita_id=receita.id)
     else:
         form = ComentarioForm()
 
@@ -104,15 +112,28 @@ def busca(request):
     
     if form.is_valid():
         termo = form.cleaned_data.get('termo', '').strip()
-        
+        sem_lactose = form.cleaned_data.get('sem_lactose')
+        sem_gluten = form.cleaned_data.get('sem_gluten')
+        vegano = form.cleaned_data.get('vegano')
+        vegetariano = form.cleaned_data.get('vegetariano')
+
+        queryset = Receita.objects.all()
         if termo:
-            # Busca por título da receita, ingredientes e categoria
-            receitas = Receita.objects.filter(
+            queryset = queryset.filter(
                 Q(titulo__icontains=termo) |
                 Q(ingredientes__nome__icontains=termo) |
                 Q(categoria__nome__icontains=termo) |
-                Q(descricao__icontains=termo) 
-            ).distinct().order_by('-visualizacoes')
+                Q(descricao__icontains=termo)
+            )
+        if sem_lactose:
+            queryset = queryset.filter(sem_lactose=True)
+        if sem_gluten:
+            queryset = queryset.filter(sem_gluten=True)
+        if vegano:
+            queryset = queryset.filter(vegano=True)
+        if vegetariano:
+            queryset = queryset.filter(vegetariano=True)
+        receitas = queryset.distinct().order_by('-visualizacoes')
 
     context = {
         'form': form,

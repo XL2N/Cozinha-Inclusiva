@@ -8,6 +8,7 @@ class Receita(models.Model):
     descricao = models.TextField(verbose_name="Descrição")
     data_publicacao = models.DateTimeField(auto_now_add=True, verbose_name="Data de Publicação")
     visualizacoes = models.IntegerField(default=0, verbose_name="Visualizações")
+    curtidas = models.IntegerField(default=0, verbose_name="Curtidas")
     imagem_capa = models.ImageField(upload_to='receitas/capas/', blank=True, null=True, verbose_name="Imagem de Capa")
     referencia = models.URLField(max_length=500, blank=True, null=True, verbose_name="Referência")
 
@@ -22,6 +23,13 @@ class Receita(models.Model):
         'categorias.Categoria',  # Referência como string 'app_name.ModelName'
         related_name='receitas_categoria'
     )
+
+
+    # Restrições alimentares
+    sem_lactose = models.BooleanField(default=False, verbose_name="Sem Lactose")
+    sem_gluten = models.BooleanField(default=False, verbose_name="Sem Glúten")
+    vegano = models.BooleanField(default=False, verbose_name="Vegano")
+    vegetariano = models.BooleanField(default=False, verbose_name="Vegetariano")
 
     class Meta:
         verbose_name = "Receita"

@@ -1,3 +1,18 @@
+/* Ajuste de fonte para cards de métricas */
+.metric-card .h4.mb-0 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.metric-card small.text-muted {
+    font-size: 0.85rem;
+}
+.metric-icon {
+    font-size: 1.2rem !important;
+}
+.metric-card .metric-divider {
+    width: 8px;
+}
 /* Dashboard styles for Administrativo */
 .dashboard-container {
     padding: 1rem 0 3rem;
