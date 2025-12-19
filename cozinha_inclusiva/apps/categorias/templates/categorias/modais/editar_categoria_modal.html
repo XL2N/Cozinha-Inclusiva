@@ -77,14 +77,16 @@
                             {% if receita.capa %}
                             <img src="{{ receita.capa.url }}" alt="{{ receita.titulo }}">
                             {% else %}
-                            <img src="{% static 'image/default/default-recipe.jpg' %}" alt="{{ receita.titulo }}">
+                            <img src="{% static 'image/default/default_recipe.png' %}" alt="{{ receita.titulo }}">
                             {% endif %}
                         </div>
-                        <div class="receita-title">
-                            {{ receita.titulo }}
-                        </div>
-                        <div class="receita-desc text-muted small">
-                            Breve descrição do prato, breve descrição do prato.
+                        <div class="receita-content">
+                            <div class="receita-title">
+                                {{ receita.titulo }}
+                            </div>
+                            <div class="receita-desc">
+                                Breve descrição do prato, breve descrição do prato.
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
@@ -111,8 +113,8 @@
 
 .receitas-vinculadas-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+    grid-template-columns: 1fr;
+    gap: 12px;
 }
 
 .receita-vinculada-card {
@@ -153,31 +155,47 @@
     transform: scale(1.1);
 }
 
+.receita-vinculada-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
 .receita-vinculada-card .receita-image {
-    width: 100%;
-    height: 120px;
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
     overflow: hidden;
-    border-radius: 6px;
-    margin-bottom: 8px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .receita-vinculada-card .receita-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+}
+
+.receita-vinculada-card .receita-content {
+    flex: 1;
+    min-width: 0;
 }
 
 .receita-vinculada-card .receita-title {
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
     color: #333;
     margin-bottom: 4px;
-    text-align: center;
 }
 
 .receita-vinculada-card .receita-desc {
-    font-size: 0.75rem;
-    color: #6c757d;
+    font-size: 0.8rem;
+    color: #28a745;
     line-height: 1.2;
     text-align: center;
 }
@@ -188,6 +206,51 @@
     border-radius: 8px;
     padding: 10px;
     position: relative;
+}
+
+.receitas-grid .receita-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+
+.receitas-grid .receita-image {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.receitas-grid .receita-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.receitas-grid .receita-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.receitas-grid .receita-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.receitas-grid .receita-desc {
+    font-size: 0.8rem;
+    color: #28a745;
+    line-height: 1.3;
 }
 
 .receitas-grid .receita-check {
@@ -317,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </button>
                     <input type="hidden" name="receitas" value="${receitaId}">
                     <div class="receita-image">
-                        <img src="${receita.imgSrc}" alt="${receita.titulo}" onerror="this.src='{% static "image/default/default-recipe.jpg" %}'">
+                        <img src="${receita.imgSrc}" alt="${receita.titulo}" onerror="this.src='{% static "image/default/default_recipe.png" %}'">
                     </div>
                     <div class="receita-title">${receita.titulo}</div>
                     <div class="receita-desc">Breve descrição do prato, breve descrição do prato.</div>
@@ -384,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     data.receitas.forEach(receita => {
                         todasReceitas[receita.id] = {
                             titulo: receita.titulo,
-                            imgSrc: receita.imagem_url || '{% static "image/default/default-recipe.jpg" %}'
+                            imgSrc: receita.imagem_url || '{% static "image/default/default_recipe.png" %}'
                         };
                     });
                 }
