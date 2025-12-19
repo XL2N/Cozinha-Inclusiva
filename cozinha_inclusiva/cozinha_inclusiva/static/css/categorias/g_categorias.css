@@ -1,21 +1,187 @@
 /* Styles for Gerenciar Categorias admin page */
-.g-categorias-container{ padding: 1rem 0 3rem; }
-.g-title{ color:#2f4e2f; font-weight:700; }
-.btn-nova{ padding:.5rem 1rem }
+.g-categorias-container{ 
+    padding: 1rem 0 3rem; 
+}
+.g-title{ 
+    color:#2f4e2f; 
+    font-weight:700; 
+}
+.btn-nova{ 
+    padding:.5rem 1rem;
+    background-color: #2f8a45;
+    border-color: #2f8a45;
+}
 
-.category-row{ display:flex; align-items:center; gap:1rem; border-radius:10px; box-shadow:0 1px 6px rgba(20,20,20,0.04); }
-.cat-title{ min-width:140px; font-size:1.05rem }
-.cat-stats{ align-items:center }
-.cat-stats .stat-label{ font-size:0.75rem; color:#6c757d }
-.cat-stats .stat-value{ font-weight:700 }
-.cat-stats .text-success{ color:#2f8a45 }
+.categories-list{
+    margin-bottom: 2rem;
+}
 
-.btn-outline-success{ border-color:#2f8a45; color:#2f8a45 }
+.category-row{ 
+    display: flex; 
+    align-items: center; 
+    padding: 1.5rem 1.5rem;
+    border-radius: 10px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06); 
+    border: 1px solid #e9ecef;
+    background-color: #fff;
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.category-row:hover{
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.category-row .form-check{
+    margin: 0;
+    padding: 0;
+    min-width: auto;
+}
+
+.category-row .form-check-input{
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    border: 2px solid #d1d1d1;
+}
+
+.cat-title{ 
+    min-width: 150px;
+    padding: 0 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2f4e2f;
+}
+
+.cat-divider{
+    width: 1px;
+    height: 50px;
+    background-color: #dee2e6;
+    margin: 0 1rem;
+}
+
+.cat-stats{ 
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 2rem;
+}
+
+.cat-stats > div{
+    flex: 1;
+    text-align: center;
+    min-width: 120px;
+}
+
+.cat-stats .stat-label{ 
+    font-size: 0.75rem; 
+    color: #6c757d;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.cat-stats .stat-value{ 
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #333;
+    display: block;
+}
+
+.cat-stats .text-success{ 
+    color: #2f8a45 !important;
+    font-size: 0.95rem !important;
+}
+
+.btn-gerenciar{ 
+    background-color: #2f8a45;
+    border-color: #2f8a45;
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    margin-left: 1rem;
+}
+
+.btn-gerenciar:hover{
+    background-color: #267038;
+    border-color: #267038;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(47, 138, 69, 0.3);
+}
 
 /* Bulk actions */
-.g-categorias-container .btn-danger{ background:#d9534f; border-color:#d9534f }
+.bulk-actions-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.bulk-actions-bar .form-check{
+    margin: 0;
+    padding: 0;
+}
+
+.bulk-actions-bar .form-check-input{
+    width: 18px;
+    height: 18px;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    border: 2px solid #d1d1d1;
+}
+
+.bulk-actions-bar .form-check-label{
+    font-weight: 600;
+    color: #495057;
+    user-select: none;
+    cursor: pointer;
+    margin: 0;
+}
+
+.btn-apagar{ 
+    background: #dc3545; 
+    border-color: #dc3545;
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-apagar:hover{
+    background: #c82333;
+    border-color: #bd2130;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+}
 
 @media (max-width: 991.98px){
-  .cat-stats{ display:block }
-  .cat-stats > div{ margin-bottom:.5rem }
+  .category-row{
+    flex-wrap: wrap;
+  }
+  .cat-divider{
+    display: none;
+  }
+  .cat-stats{ 
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+  }
+  .cat-stats > div{ 
+    text-align: left;
+  }
+  .cat-title{
+    min-width: 100px;
+  }
 }

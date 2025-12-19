@@ -1,0 +1,37 @@
+<!-- Modal Excluir Categorias -->
+<div class="modal fade" id="excluirCategoriasModal" tabindex="-1" aria-labelledby="excluirCategoriasModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="excluirCategoriasModalLabel">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'excluir_categorias' %}">
+                {% csrf_token %}
+                <input type="hidden" name="categorias_ids" id="categoriasSelecionadasInput">
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="fa-solid fa-trash text-danger" style="font-size: 3rem;"></i>
+                    </div>
+                    <p class="text-center mb-0">
+                        Você tem certeza que deseja excluir <strong id="contadorCategorias">0</strong> categoria(s)?
+                    </p>
+                    <p class="text-center text-muted small mt-2">
+                        <i class="fa-solid fa-info-circle me-1"></i>
+                        As receitas vinculadas não serão excluídas, apenas a categoria.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-times me-2"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa-solid fa-trash me-2"></i>Sim, Excluir
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -15,48 +15,132 @@
             <p class="text-muted small mb-0">Visualize e administre as categorias do site</p>
         </div>
         <div>
-            <a href="#" class="btn btn-success btn-nova"><i class="fa-solid fa-plus me-2"></i>Nova Categoria</a>
+            <button type="button" class="btn btn-success btn-nova" data-bs-toggle="modal" data-bs-target="#adicionarCategoriaModal">
+                <i class="fa-solid fa-plus me-2"></i>Nova Categoria
+            </button>
         </div>
     </div>
 
     <!-- Lista de categorias -->
     <div class="categories-list">
-
-            {% for categoria in categorias %}
-            <div class="category-row card mb-3 p-3 d-flex align-items-center">
-                <div class="form-check me-3">
-                    <input class="form-check-input" type="checkbox" value="" id="cat{{ forloop.counter }}">
+        {% for categoria in categorias %}
+        <div class="category-row">
+            <div class="form-check">
+                <input class="form-check-input categoria-checkbox" type="checkbox" value="{{ categoria.id }}" id="cat{{ categoria.id }}">
+            </div>
+            
+            <div class="cat-title">
+                {{ categoria.nome }}
+            </div>
+            
+            <div class="cat-divider"></div>
+            
+            <div class="cat-stats">
+                <div>
+                    <span class="stat-label">Visualizações</span>
+                    <span class="stat-value">{{ categoria.visualizacao_total }}</span>
                 </div>
-                <div class="cat-title me-4">
-                    <strong>{{ categoria.nome }}</strong>
+                <div>
+                    <span class="stat-label">Receita + Popular</span>
+                    <span class="stat-value text-success">
+                        {% if categoria.receita_mais_popular %}
+                            {{ categoria.receita_mais_popular.titulo }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </span>
                 </div>
-                <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
-                    <div><div class="stat-label">Visualizações</div><div class="stat-value">{{ categoria.visualizacao_total }}</div></div>
-                    <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">{% if categoria.receita_mais_popular %}{{ categoria.receita_mais_popular.titulo }}{% else %}-{% endif %}</div></div>
-                    <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">{{ categoria.receitas.count }}</div></div>
-                    <div><div class="stat-label">Data de Criação</div><div class="stat-value">{{ categoria.data_criacao|date:'d/m/Y' }}</div></div>
+                <div>
+                    <span class="stat-label">Receitas Vinculadas</span>
+                    <span class="stat-value">{{ categoria.total_receitas|default:0 }}</span>
                 </div>
-                <div class="ms-3">
-                    <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
+                <div>
+                    <span class="stat-label">Data de Criação</span>
+                    <span class="stat-value">{{ categoria.data_criacao|date:'d/m/Y' }}</span>
                 </div>
             </div>
-            {% empty %}
-            <div class="alert alert-info">Nenhuma categoria cadastrada.</div>
-            {% endfor %}
-
+            
+            <button type="button" class="btn btn-gerenciar btn-editar-categoria" data-categoria-id="{{ categoria.id }}">
+                <i class="fa-solid fa-bars-staggered me-2"></i>Gerenciar
+            </button>
+        </div>
+        {% empty %}
+        <div class="alert alert-info">Nenhuma categoria cadastrada.</div>
+        {% endfor %}
     </div>
 
     <!-- Bulk actions -->
-    <div class="d-flex align-items-center justify-content-between mt-3">
-        <div class="form-check">
+    <div class="bulk-actions-bar">
+        <div class="form-check d-flex align-items-center">
             <input class="form-check-input" type="checkbox" value="" id="selectAll">
-            <label class="form-check-label ms-2" for="selectAll">Selecionar Todas</label>
+            <label class="form-check-label" for="selectAll">Selecionar Todas</label>
         </div>
-        <div>
-            <button class="btn btn-danger"><i class="fa-solid fa-trash me-2"></i>Apagar</button>
-        </div>
+        <button type="button" class="btn btn-apagar" id="btnExcluirSelecionadas">
+            <i class="fa-solid fa-trash me-2"></i>Apagar
+        </button>
     </div>
 
 </div>
+
+<!-- Modais -->
+{% include 'categorias/modais/adicionar_categoria_modal.html' %}
+{% include 'categorias/modais/editar_categoria_modal.html' %}
+{% include 'categorias/modais/renomear_categoria_modal.html' %}
+{% include 'categorias/modais/excluir_categorias_modal.html' %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Selecionar todas as categorias
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const categoriaCheckboxes = document.querySelectorAll('.categoria-checkbox');
+    
+    selectAllCheckbox.addEventListener('change', function() {
+        categoriaCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    // Atualizar "Selecionar Todas" quando checkboxes individuais mudam
+    categoriaCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const allChecked = Array.from(categoriaCheckboxes).every(cb => cb.checked);
+            const anyChecked = Array.from(categoriaCheckboxes).some(cb => cb.checked);
+            selectAllCheckbox.checked = allChecked;
+            selectAllCheckbox.indeterminate = anyChecked && !allChecked;
+        });
+    });
+
+    // Botão excluir selecionadas
+    document.getElementById('btnExcluirSelecionadas').addEventListener('click', function() {
+        const selecionadas = Array.from(categoriaCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+        
+        if (selecionadas.length === 0) {
+            alert('Selecione pelo menos uma categoria para excluir.');
+            return;
+        }
+        
+        document.getElementById('categoriasSelecionadasInput').value = selecionadas.join(',');
+        document.getElementById('contadorCategorias').textContent = selecionadas.length;
+        const modal = new bootstrap.Modal(document.getElementById('excluirCategoriasModal'));
+        modal.show();
+    });
+
+    // Botão editar categoria
+    document.querySelectorAll('.btn-editar-categoria').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const categoriaId = this.dataset.categoriaId;
+            
+            // Carregar dados da categoria e abrir modal
+            if (typeof carregarCategoriaEditar === 'function') {
+                carregarCategoriaEditar(categoriaId);
+                const modal = new bootstrap.Modal(document.getElementById('editarCategoriaModal'));
+                modal.show();
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}

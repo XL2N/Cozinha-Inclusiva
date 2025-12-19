@@ -144,65 +144,89 @@ def excluir_receita(request, receita_id):
 # ----- TELA DASHBOARD  -------
 
 def dashboard(request):
-    # Filtros
-    filtro_data = request.GET.get('filtro_data', 'mes')
-    filtro_categoria = request.GET.get('filtro_categoria', '')
-
-    receitas = Receita.objects.all()
-
-    # Filtro de data
-    hoje = datetime.now()
-    if filtro_data == 'semana':
-        inicio = hoje - timedelta(days=7)
-        receitas = receitas.filter(data_publicacao__gte=inicio)
-    elif filtro_data == 'mes':
-        inicio = hoje - timedelta(days=30)
-        receitas = receitas.filter(data_publicacao__gte=inicio)
-    elif filtro_data == 'ano':
-        inicio = hoje - timedelta(days=365)
-        receitas = receitas.filter(data_publicacao__gte=inicio)
-    # 'tudo' não filtra
-
-    # Filtro de categoria
-    if filtro_categoria:
-        receitas = receitas.filter(categoria__id=filtro_categoria)
-
-    categorias = Categoria.objects.all().order_by('nome')
-
-    # Total de visualizações das receitas filtradas
-    total_visualizacoes = receitas.aggregate(total=models.Sum('visualizacoes'))['total'] or 0
-
-    # Total de comentários (pode ser filtrado por receitas exibidas)
-    total_comentarios = Comentario.objects.filter(receita__in=receitas).count()
-
-    # Geração de dados para o gráfico de visualizações por dia (últimos 30 dias)
-    dias = []
-    visualizacoes_por_dia = []
-    for i in range(29, -1, -1):
-        dia = (datetime.now() - timedelta(days=i)).date()
-        dias.append(dia.strftime('%d/%m'))
-        visualizacoes = receitas.filter(data_publicacao__date=dia).aggregate(total=models.Sum('visualizacoes'))['total'] or 0
-        visualizacoes_por_dia.append(visualizacoes)
-
-
-    # Gráfico de pizza: categorias mais curtidas (soma das curtidas das receitas de cada categoria)
-    categorias_curtidas = (
-        categorias.annotate(total_curtidas=models.Sum('receitas_categoria__curtidas'))
-        .order_by('-total_curtidas')[:5]
+    from django.db.models import Count
+    from collections import defaultdict
+    import calendar
+    
+    # Filtros de data
+    data_inicio_str = request.GET.get('data_inicio', '')
+    data_fim_str = request.GET.get('data_fim', '')
+    
+    # Datas padrão
+    hoje = datetime.now().date()
+    if not data_inicio_str:
+        data_inicio = hoje - timedelta(days=30)
+    else:
+        data_inicio = datetime.strptime(data_inicio_str, '%Y-%m-%d').date()
+    
+    if not data_fim_str:
+        data_fim = hoje
+    else:
+        data_fim = datetime.strptime(data_fim_str, '%Y-%m-%d').date()
+    
+    # Estatísticas gerais
+    total_receitas = Receita.objects.all().count()
+    total_categorias = Categoria.objects.all().count()
+    total_visualizacoes = Receita.objects.aggregate(total=models.Sum('visualizacoes'))['total'] or 0
+    total_comentarios = Comentario.objects.all().count()
+    
+    # Top 5 receitas mais visualizadas
+    top_receitas_visualizacoes = Receita.objects.all().order_by('-visualizacoes')[:5]
+    grafico_receitas_labels = [r.titulo for r in top_receitas_visualizacoes]
+    grafico_receitas_dados = [r.visualizacoes for r in top_receitas_visualizacoes]
+    
+    # Quantidade de receitas por categoria
+    categorias = Categoria.objects.all()
+    categorias_count = categorias.annotate(total_receitas=Count('receitas')).order_by('-total_receitas')
+    grafico_categorias_labels = [c.nome for c in categorias_count]
+    grafico_categorias_dados = [c.total_receitas for c in categorias_count]
+    total_receitas_categorias = sum(grafico_categorias_dados)
+    
+    # Calendário de publicações (mês atual)
+    mes_atual = hoje.month
+    ano_atual = hoje.year
+    cal = calendar.monthcalendar(ano_atual, mes_atual)
+    mes_nome = calendar.month_name[mes_atual]
+    
+    # Dias com publicações
+    receitas_mes = Receita.objects.filter(
+        data_publicacao__year=ano_atual,
+        data_publicacao__month=mes_atual
     )
-    grafico_curtidas_labels = [c.nome for c in categorias_curtidas]
-    grafico_curtidas_dados = [c.total_curtidas or 0 for c in categorias_curtidas]
-
+    dias_publicacao = set(receitas_mes.values_list('data_publicacao__day', flat=True))
+    
+    # Ranking de receitas mais comentadas
+    receitas_mais_comentadas = Receita.objects.annotate(
+        total_comentarios=Count('comentarios')
+    ).filter(total_comentarios__gt=0).order_by('-total_comentarios')[:3]
+    
+    # Preparar dados do calendário
+    calendario_semanas = []
+    for semana in cal:
+        semana_dias = []
+        for dia in semana:
+            if dia == 0:
+                semana_dias.append({'dia': '', 'publicado': False})
+            else:
+                semana_dias.append({'dia': dia, 'publicado': dia in dias_publicacao})
+        calendario_semanas.append(semana_dias)
+    
     context = {
-        'receitas': receitas.order_by('-data_publicacao'),
-        'categorias': categorias,
-        'filtro_data': filtro_data,
-        'filtro_categoria': filtro_categoria,
+        'data_inicio': data_inicio,
+        'data_fim': data_fim,
+        'total_receitas': total_receitas,
+        'total_categorias': total_categorias,
         'total_visualizacoes': total_visualizacoes,
         'total_comentarios': total_comentarios,
-        'grafico_labels': json.dumps(dias),
-        'grafico_dados': json.dumps(visualizacoes_por_dia),
-        'grafico_curtidas_labels': json.dumps(grafico_curtidas_labels, ensure_ascii=False),
-        'grafico_curtidas_dados': json.dumps(grafico_curtidas_dados),
+        'grafico_receitas_labels': json.dumps(grafico_receitas_labels, ensure_ascii=False),
+        'grafico_receitas_dados': json.dumps(grafico_receitas_dados),
+        'grafico_categorias_labels': json.dumps(grafico_categorias_labels, ensure_ascii=False),
+        'grafico_categorias_dados': json.dumps(grafico_categorias_dados),
+        'total_receitas_categorias': total_receitas_categorias,
+        'calendario_semanas': calendario_semanas,
+        'mes_nome': mes_nome,
+        'ano_atual': ano_atual,
+        'receitas_mais_comentadas': receitas_mais_comentadas,
+        'categorias': categorias,
     }
     return render(request, 'administrativo/dashboard.html', context)

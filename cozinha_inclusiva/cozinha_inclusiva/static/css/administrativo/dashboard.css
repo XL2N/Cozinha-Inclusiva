@@ -1,107 +1,263 @@
-/* Ajuste de fonte para cards de métricas */
-.metric-card .h4.mb-0 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-.metric-card small.text-muted {
-    font-size: 0.85rem;
-}
-.metric-icon {
-    font-size: 1.2rem !important;
-}
-.metric-card .metric-divider {
-    width: 8px;
-}
-/* Dashboard styles for Administrativo */
+/* Dashboard styles */
 .dashboard-container {
-    padding: 1rem 0 3rem;
+    padding: 1.5rem 0 3rem;
 }
 
+.titulo-adm {
+    color: #2d6449;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+/* Cards de Métricas */
 .metric-card {
-    border: 0;
-    box-shadow: 0 6px 18px rgba(36, 37, 38, 0.06);
-    border-radius: 14px;
-    position: relative;
-    overflow: hidden;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    transition: all 0.3s ease;
 }
 
-/* subtle left accent bar */
-.metric-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 12px;
-    height: 100%;
-    background: rgba(47, 138, 69, 0.12);
-    border-top-left-radius: 14px;
-    border-bottom-left-radius: 14px;
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 .metric-card .card-body {
-    padding: 1rem 1.25rem;
-    display: flex;
-    align-items: center;
+    padding: 1.5rem;
 }
 
 .metric-icon {
-    width: 88px;
-    height: 88px;
-    flex: 0 0 88px;
-    font-size: 44px;
+    font-size: 2rem;
+    color: #2d6449;
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d6449;
+}
+
+/* Calendário */
+.calendar-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 6px;
+    table-layout: fixed;
+}
+
+.calendar-table th {
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #6c757d;
+    padding: 0.6rem 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.calendar-table td {
+    text-align: center;
+    padding: 0;
+}
+
+.calendar-day {
+    display: block;
+    width: 100%;
+    min-height: 40px;
+    text-align: center;
+    padding: 0.7rem 0.3rem;
+    border-radius: 10px;
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    cursor: default;
+    border: 2px solid transparent;
+}
+
+.calendar-day:not(.empty):not(.published):hover {
+    background: #e9ecef;
+    transform: scale(1.05);
+}
+
+.calendar-day.published {
+    background: #2d6449;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(45, 100, 73, 0.3);
+    cursor: pointer;
+    position: relative;
+}
+
+.calendar-day.published:hover {
+    background: #3d7350;
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(45, 100, 73, 0.4);
+}
+
+.calendar-day.published::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+}
+
+.calendar-day.empty {
+    background: transparent;
+    visibility: hidden;
+}
+
+.calendar-legend {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent !important;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    font-size: 0.85rem;
 }
 
-/* override bootstrap utility classes applied in template */
-.metric-icon.bg-success,
-.metric-icon.bg-primary,
-.metric-icon.bg-warning,
-.metric-icon.bg-danger {
-    background: transparent !important;
-    color: #7fa97a !important;
+.calendar-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
-.metric-icon.rounded-circle {
-    border-radius: 10px !important;
+.calendar-legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.metric-divider {
-    width: 2px;
-    height: 72px;
-    background: rgba(0, 0, 0, 0.08);
-    margin: 0 20px;
-    border-radius: 1px;
+.calendar-legend-color.published {
+    background: #2d6449;
 }
 
-.metric-card small.text-muted {
-    display: block;
-    color: #6c757d
+/* Ranking */
+.ranking-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.metric-card .h4 {
-    font-size: 3rem;
-    color: #7fa97a;
-    font-weight: 800;
-    line-height: 1
+.ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    transition: all 0.3s ease;
 }
 
-.metric-card small.text-muted {
-    display: block;
-    color: #7a7a7a
+.ranking-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-/* make content area more spacious to match mock */
-.metric-card .card-body {
-    gap: 0;
-    padding: 22px 26px
+.ranking-position {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d6449;
+    width: 40px;
+    flex-shrink: 0;
 }
 
-.metric-card>.card-body>div:last-child {
-    text-align: right
+.ranking-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin: 0 1rem;
+}
+
+.ranking-info {
+    flex: 1;
+}
+
+.ranking-info h6 {
+    margin: 0 0 0.3rem 0;
+    font-weight: 600;
+    color: #212529;
+}
+
+.ranking-info small {
+    color: #6c757d;
+}
+
+.ranking-comments {
+    font-weight: 600;
+    color: #2d6449;
+    margin-left: 1rem;
+}
+
+/* Gráfico Donut com texto central */
+.donut-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+}
+
+.donut-center-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2d6449;
+    line-height: 1;
+}
+
+.donut-center-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 0.3rem;
+}
+
+/* Filtros de Data */
+.date-filter input {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 0.5rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .metric-value {
+        font-size: 1.5rem;
+    }
+    
+    .ranking-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .ranking-position {
+        font-size: 1.2rem;
+        width: 30px;
+    }
+    
+    .calendar-day {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
 }
 
 .chart-placeholder {

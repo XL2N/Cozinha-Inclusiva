@@ -10,165 +10,206 @@
 
 <div class="dashboard-container">
 
-    <div class="mb-3 d-flex align-items-center justify-content-between">
+    <div class="mb-4 d-flex align-items-center justify-content-between">
         <!-- TITULO DA PÁGINA -->
         <h2 class="titulo-adm">Visão Geral</h2>
 
-        <!-- FILTRO DE DATA -->
+        <!-- FILTROS DE DATA -->
         <form method="get" class="d-flex align-items-center gap-2">
-            <div class="dropdown me-2">
-                <button class="btn-action dropdown-toggle" type="button" id="filtroDataDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    {% if filtro_data == 'semana' %}Última semana{% elif filtro_data == 'ano' %}Último ano{% elif filtro_data == 'tudo' %}Tudo{% else %}Último mês{% endif %}
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="filtroDataDropdown">
-                    <li><button class="dropdown-item" type="submit" name="filtro_data" value="semana">Última semana</button></li>
-                    <li><button class="dropdown-item" type="submit" name="filtro_data" value="mes">Último mês</button></li>
-                    <li><button class="dropdown-item" type="submit" name="filtro_data" value="ano">Último ano</button></li>
-                    <li><button class="dropdown-item" type="submit" name="filtro_data" value="tudo">Tudo</button></li>
-                </ul>
-            </div>
-            <select class="form-select" name="filtro_categoria" style="max-width:200px;" onchange="this.form.submit()">
-                <option value="">Todas as categorias</option>
-                {% for categoria in categorias %}
-                    <option value="{{ categoria.id }}" {% if filtro_categoria|default:'' == categoria.id|stringformat:'s' %}selected{% endif %}>{{ categoria.nome }}</option>
-                {% endfor %}
-            </select>
-            {% if filtro_data or filtro_categoria %}
-                <a href="?" class="btn btn-sm btn-outline-secondary ms-2">Limpar Filtros</a>
+            <input type="date" name="data_inicio" class="form-control" value="{{ data_inicio|date:'Y-m-d' }}" style="max-width: 150px;">
+            <input type="date" name="data_fim" class="form-control" value="{{ data_fim|date:'Y-m-d' }}" style="max-width: 150px;">
+            <button type="submit" class="btn btn-success btn-sm">
+                <i class="fa-solid fa-filter me-1"></i>Filtrar
+            </button>
+            {% if request.GET.data_inicio or request.GET.data_fim %}
+                <a href="?" class="btn btn-sm btn-outline-secondary">Limpar</a>
             {% endif %}
         </form>
 
     </div>
 
-    <!-- Top Metrics -->
+    <!-- Cards de Estatísticas -->
     <div class="row g-3 mb-4">
-        <div class="col">
-            <div class="d-flex flex-row gap-3 flex-wrap">
-                <!-- Receitas -->
-                <div class="card metric-card p-2 d-flex flex-row align-items-center" style="min-width: 140px; min-height: 60px;">
-                    <span class="d-flex align-items-center justify-content-center" style="color:#2d6449; font-size:1.7rem; min-width:38px;">
+        <!-- Receitas -->
+        <div class="col-md-3">
+            <div class="card metric-card text-center">
+                <div class="card-body">
+                    <div class="metric-icon">
                         <i class="fa-solid fa-utensils"></i>
-                    </span>
-                    <div style="border-left:2px solid #2d6449; height:32px; margin:0 10px;"></div>
-                    <div class="d-flex flex-column align-items-start justify-content-center">
-                        <span style="font-size:0.95rem; color:#888;">Receitas</span>
-                        <span style="font-size:1.3rem; color:#2d6449; font-weight:700;">{{ receitas|length }}</span>
                     </div>
+                    <div class="metric-label">Receitas</div>
+                    <div class="metric-value">{{ total_receitas }}</div>
                 </div>
-                <!-- Categorias -->
-                <div class="card metric-card p-2 d-flex flex-row align-items-center" style="min-width: 140px; min-height: 60px;">
-                    <span class="d-flex align-items-center justify-content-center" style="color:#5D3C2A; font-size:1.7rem; min-width:38px;">
+            </div>
+        </div>
+        
+        <!-- Categorias -->
+        <div class="col-md-3">
+            <div class="card metric-card text-center">
+                <div class="card-body">
+                    <div class="metric-icon">
                         <i class="fa-solid fa-clipboard-list"></i>
-                    </span>
-                    <div style="border-left:2px solid #5D3C2A; height:32px; margin:0 10px;"></div>
-                    <div class="d-flex flex-column align-items-start justify-content-center">
-                        <span style="font-size:0.95rem; color:#888;">Categorias</span>
-                        <span style="font-size:1.3rem; color:#5D3C2A; font-weight:700;">{{ categorias|length }}</span>
                     </div>
+                    <div class="metric-label">Categorias</div>
+                    <div class="metric-value">{{ total_categorias }}</div>
                 </div>
-                <!-- Visitas (Visualizações) -->
-                <div class="card metric-card p-2 d-flex flex-row align-items-center" style="min-width: 140px; min-height: 60px;">
-                    <span class="d-flex align-items-center justify-content-center" style="color:#22613b; font-size:1.7rem; min-width:38px;">
+            </div>
+        </div>
+        
+        <!-- Visitas -->
+        <div class="col-md-3">
+            <div class="card metric-card text-center">
+                <div class="card-body">
+                    <div class="metric-icon">
                         <i class="fa-solid fa-users"></i>
-                    </span>
-                    <div style="border-left:2px solid #22613b; height:32px; margin:0 10px;"></div>
-                    <div class="d-flex flex-column align-items-start justify-content-center">
-                        <span style="font-size:0.95rem; color:#888;">Visitas</span>
-                        <span style="font-size:1.3rem; color:#22613b; font-weight:700;">{{ total_visualizacoes }}</span>
+                    </div>
+                    <div class="metric-label">Visitas</div>
+                    <div class="metric-value">{{ total_visualizacoes }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comentários -->
+        <div class="col-md-3">
+            <div class="card metric-card text-center">
+                <div class="card-body">
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div class="metric-label">Comentários</div>
+                    <div class="metric-value">{{ total_comentarios }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos e Widgets -->
+    <div class="row g-4 mb-4">
+        <!-- Gráfico de visitas por receita (Top 5) -->
+        <div class="col-12 col-lg-7">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title mb-3">Gráfico de visitas por receita (Top 5)</h6>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="chart-receitas-visualizacoes"></canvas>
                     </div>
                 </div>
-                <!-- Comentários (dinâmico) -->
-                <div class="card metric-card p-2 d-flex flex-row align-items-center" style="min-width: 140px; min-height: 60px;">
-                    <span class="d-flex align-items-center justify-content-center" style="color:#5D3C2A; font-size:1.7rem; min-width:38px;">
-                        <i class="fa-solid fa-comments"></i>
-                    </span>
-                    <div style="border-left:2px solid #5D3C2A; height:32px; margin:0 10px;"></div>
-                    <div class="d-flex flex-column align-items-start justify-content-center">
-                        <span style="font-size:0.95rem; color:#888;">Comentários</span>
-                        <span style="font-size:1.3rem; color:#5D3C2A; font-weight:700;">{{ total_comentarios }}</span>
+            </div>
+        </div>
+
+        <!-- Gráfico de pizza - Quantidade de receitas por categoria -->
+        <div class="col-12 col-lg-5">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <h6 class="mb-3 text-center">Quantidade de receitas por categoria</h6>
+                    <div class="position-relative d-inline-block">
+                        <canvas id="chart-categorias" width="220" height="220"></canvas>
+                        <div class="donut-center-text">
+                            <div class="donut-center-number">{{ total_receitas_categorias }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Charts and Side Widgets -->
-    <div class="row g-4 mb-4">
+    <!-- Segunda linha: Calendário e Ranking -->
+    <div class="row g-4">
+        <!-- Calendário de publicações -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title mb-3">Calendário de publicações</h6>
+                    <div class="text-center mb-3">
+                        <strong style="color: #2d6449; font-size: 1.15rem;">{{ mes_nome }} {{ ano_atual }}</strong>
+                    </div>
+                    <table class="calendar-table">
+                        <thead>
+                            <tr>
+                                <th>D</th>
+                                <th>S</th>
+                                <th>T</th>
+                                <th>Q</th>
+                                <th>Q</th>
+                                <th>S</th>
+                                <th>S</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for semana in calendario_semanas %}
+                            <tr>
+                                {% for dia_info in semana %}
+                                <td>
+                                    {% if dia_info.dia %}
+                                        <div class="calendar-day {% if dia_info.publicado %}published{% endif %}" {% if dia_info.publicado %}title="Receita publicada em {{ dia_info.dia }}/{{ mes_nome }}/{{ ano_atual }}"{% endif %}>
+                                            {{ dia_info.dia }}
+                                        </div>
+                                    {% else %}
+                                        <div class="calendar-day empty">-</div>
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="calendar-legend">
+                        <div class="calendar-legend-item">
+                            <div class="calendar-legend-color published"></div>
+                            <span class="text-muted">Publicações</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ranking de receitas mais comentadas -->
         <div class="col-12 col-lg-8">
             <div class="card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h5 class="card-title mb-0">Gráfico de visitas</h5>
-                        <small class="text-muted">
-                            {% if filtro_data == 'semana' %}Últimos 7 dias
-                            {% elif filtro_data == 'ano' %}Últimos 365 dias
-                            {% elif filtro_data == 'tudo' %}Todos os dias
-                            {% else %}Últimos 30 dias{% endif %}
-                        </small>
+                        <h6 class="card-title mb-0">Ranking de Receitas mais comentadas</h6>
+                        <select class="form-select form-select-sm" style="max-width: 150px;">
+                            <option selected>Categoria</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <canvas id="chart-views" height="120"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-lg-4">
-            <div class="card mb-3">
-                <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                    <h6 class="mb-3 text-center">Categorias mais curtidas</h6>
-                    <canvas id="chart-curtidas-categoria" width="220" height="220"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Lower row: Recent items and Calendar -->
-    <div class="row g-4">
-
-        <div class="col-12 col-lg-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h6 class="card-title">Calendário</h6>
-                    <div class="calendar-placeholder">Calendário (placeholder)</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-lg-8">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h6 class="card-title">Receitas Recentes</h6>
-                    <div class="table-responsive">
-                        <table class="table table-borderless table-hover mb-0">
-                            <thead>
-                                <tr class="text-muted small">
-                                    <th>Título</th>
-                                    <th>Categorias</th>
-                                    <th>Visualizações</th>
-                                    <th>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for receita in receitas %}
-                                <tr>
-                                    <td>{{ receita.titulo }}</td>
-                                    <td>
-                                        {% for cat in receita.categoria.all %}
-                                            <span class="badge bg-light text-dark">{{ cat.nome }}</span>{% if not forloop.last %}, {% endif %}
-                                        {% empty %}-{% endfor %}
-                                    </td>
-                                    <td>{{ receita.visualizacoes }}</td>
-                                    <td>{{ receita.data_publicacao|date:"d/m/Y" }}</td>
-                                </tr>
-                                {% empty %}
-                                <tr><td colspan="4" class="text-center text-muted">Nenhuma receita encontrada para o filtro selecionado.</td></tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <div class="ranking-list">
+                        {% for receita in receitas_mais_comentadas %}
+                        <div class="ranking-item d-flex align-items-center mb-3">
+                            <div class="ranking-position">{{ forloop.counter }}º</div>
+                            <div class="ranking-image">
+                                {% if receita.capa %}
+                                <img src="{{ receita.capa.url }}" alt="{{ receita.titulo }}">
+                                {% else %}
+                                <img src="{% static 'image/default/default-recipe.jpg' %}" alt="{{ receita.titulo }}">
+                                {% endif %}
+                            </div>
+                            <div class="ranking-info flex-grow-1">
+                                <div class="ranking-title">{{ receita.titulo }}</div>
+                                <div class="ranking-restrictions text-muted small">
+                                    Restrições:
+                                    {% for cat in receita.categoria.all %}
+                                        {{ cat.nome }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        Sem restrições
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="ranking-comments">
+                                <div class="comments-label">Comentários</div>
+                                <div class="comments-count">{{ receita.total_comentarios }}</div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted text-center">Nenhuma receita com comentários ainda.</p>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
 </div>
@@ -178,74 +219,113 @@
 {% block javascript %}
 <script src="{% static 'js/chart.min.js' %}"></script>
 <script>
-const chartLabels = JSON.parse('{{ grafico_labels|escapejs }}');
-const chartData = JSON.parse('{{ grafico_dados|escapejs }}');
+// Dados para o gráfico de barras horizontais (Top 5 receitas)
+const receitasLabels = JSON.parse('{{ grafico_receitas_labels|escapejs }}');
+const receitasDados = JSON.parse('{{ grafico_receitas_dados|escapejs }}');
 
-// Gráfico de pizza das curtidas por categoria
-const curtidasCategoriaLabels = JSON.parse('{{ grafico_curtidas_labels|escapejs }}');
-const curtidasCategoriaData = JSON.parse('{{ grafico_curtidas_dados|escapejs }}');
-const pizzaColors = [
-    '#b7d7b0', '#e5dbc6', '#5d3c2a', '#a89c94', '#22613b', '#f6faf7', '#b7d7b0', '#e5dbc6', '#5d3c2a', '#a89c94', '#22613b'
-];
+// Dados para o gráfico de pizza (Receitas por categoria)
+const categoriasLabels = JSON.parse('{{ grafico_categorias_labels|escapejs }}');
+const categoriasDados = JSON.parse('{{ grafico_categorias_dados|escapejs }}');
 
-if (document.getElementById('chart-curtidas-categoria')) {
-    const ctxPizzaCat = document.getElementById('chart-curtidas-categoria').getContext('2d');
-    new Chart(ctxPizzaCat, {
+// Cores para os gráficos
+const barColors = ['#2d6449', '#3d8359', '#4d9268', '#5da378', '#6db488'];
+const pieColors = ['#b7d7b0', '#88b580', '#5d9368', '#3d7350', '#2d6449'];
+
+// Gráfico de barras horizontais - Receitas mais visualizadas
+if (document.getElementById('chart-receitas-visualizacoes')) {
+    const ctxBarras = document.getElementById('chart-receitas-visualizacoes').getContext('2d');
+    new Chart(ctxBarras, {
+        type: 'bar',
+        data: {
+            labels: receitasLabels,
+            datasets: [{
+                label: 'Visitas',
+                data: receitasDados,
+                backgroundColor: barColors,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: '#2d6449',
+                    padding: 10,
+                    titleFont: { size: 13 },
+                    bodyFont: { size: 12 }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                        color: '#f0f0f0'
+                    },
+                    ticks: {
+                        font: { size: 11 }
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: { size: 12 }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Gráfico de pizza - Receitas por categoria
+if (document.getElementById('chart-categorias')) {
+    const ctxPizza = document.getElementById('chart-categorias').getContext('2d');
+    new Chart(ctxPizza, {
         type: 'doughnut',
         data: {
-            labels: curtidasCategoriaLabels,
+            labels: categoriasLabels,
             datasets: [{
-                data: curtidasCategoriaData,
-                backgroundColor: pizzaColors,
-                borderWidth: 2,
+                data: categoriasDados,
+                backgroundColor: pieColors,
+                borderWidth: 3,
                 borderColor: '#fff',
             }]
         },
         options: {
-            cutout: '70%',
+            cutout: '65%',
+            responsive: true,
+            maintainAspectRatio: true,
             plugins: {
                 legend: {
                     display: true,
                     position: 'bottom',
                     labels: {
-                        color: '#5d3c2a',
-                        font: { size: 13 }
+                        color: '#333',
+                        font: { size: 12 },
+                        padding: 15,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
                     }
                 },
                 tooltip: {
+                    backgroundColor: '#2d6449',
+                    padding: 10,
                     callbacks: {
                         label: function(context) {
-                            return `${context.label}: ${context.parsed}`;
+                            return `${context.label}: ${context.parsed} receitas`;
                         }
                     }
-                },
-            },
+                }
+            }
         }
     });
 }
-
-const ctx = document.getElementById('chart-views').getContext('2d');
-const chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: chartLabels,
-        datasets: [{
-            label: 'Visualizações',
-            data: chartData,
-            backgroundColor: 'rgba(45, 100, 73, 0.7)',
-            borderRadius: 6,
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { display: false },
-        },
-        scales: {
-            x: { grid: { display: false } },
-            y: { beginAtZero: true, grid: { color: '#eee' } }
-        }
-    }
-});
 </script>
 {% endblock %}

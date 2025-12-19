@@ -1,0 +1,401 @@
+{% load static %}
+<!-- Modal Gerenciar Categoria -->
+<div class="modal fade" id="editarCategoriaModal" tabindex="-1" aria-labelledby="editarCategoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="editarCategoriaModalLabel">
+                    Gerenciar Categoria
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" id="formGerenciarCategoria">
+                {% csrf_token %}
+                <input type="hidden" name="categoria_id" id="editCategoriaId">
+                <input type="hidden" name="nome" id="editCategoriaNomeHidden">
+                <div class="modal-body">
+                    <!-- Nome da Categoria -->
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h5 class="mb-0 text-success fw-bold" id="editCategoriaNome">Sem Lactose</h5>
+                        <button type="button" class="btn btn-link text-success p-0" id="btnAbrirRenomear">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                    </div>
+
+                    <!-- Botão Vincular Receita -->
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-success w-100" id="btnVincularReceita">
+                            Vincular Receita
+                        </button>
+                    </div>
+
+                    <!-- Grid de Receitas Vinculadas -->
+                    <div class="receitas-vinculadas-container">
+                        <div class="receitas-vinculadas-grid" id="receitasVinculadasGrid">
+                            <!-- Receitas serão carregadas via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-save me-2"></i>Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Vincular Receitas -->
+<div class="modal fade" id="vincularReceitasModal" tabindex="-1" aria-labelledby="vincularReceitasModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="vincularReceitasModalLabel">Vincular Receitas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Buscar Receitas -->
+                <div class="mb-3">
+                    <label for="buscarReceitaVincular" class="form-label fw-bold">Buscar Receita</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="buscarReceitaVincular" placeholder="Busque por Receita...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fa-solid fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid de Receitas -->
+                <div class="receitas-grid" id="receitasVincularGrid">
+                    {% for receita in receitas %}
+                    <div class="receita-card" data-receita-nome="{{ receita.titulo|lower }}" data-receita-id="{{ receita.id }}">
+                        <div class="receita-check">
+                            <input class="form-check-input vincular-receita-checkbox" type="checkbox" value="{{ receita.id }}" id="vincularReceita{{ receita.id }}">
+                        </div>
+                        <div class="receita-image">
+                            {% if receita.capa %}
+                            <img src="{{ receita.capa.url }}" alt="{{ receita.titulo }}">
+                            {% else %}
+                            <img src="{% static 'image/default/default-recipe.jpg' %}" alt="{{ receita.titulo }}">
+                            {% endif %}
+                        </div>
+                        <div class="receita-title">
+                            {{ receita.titulo }}
+                        </div>
+                        <div class="receita-desc text-muted small">
+                            Breve descrição do prato, breve descrição do prato.
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="btnConfirmarVincular">
+                    <i class="fa-solid fa-check me-2"></i>Vincular Selecionadas
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.receitas-vinculadas-container {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    min-height: 200px;
+}
+
+.receitas-vinculadas-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.receita-vinculada-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.receita-vinculada-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.receita-vinculada-card .btn-remover {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #dc3545;
+    border: 2px solid white;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 10;
+    transition: all 0.2s ease;
+}
+
+.receita-vinculada-card .btn-remover:hover {
+    background: #c82333;
+    transform: scale(1.1);
+}
+
+.receita-vinculada-card .receita-image {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.receita-vinculada-card .receita-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.receita-vinculada-card .receita-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.receita-vinculada-card .receita-desc {
+    font-size: 0.75rem;
+    color: #6c757d;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.receitas-grid .receita-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+}
+
+.receitas-grid .receita-check {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+}
+
+.receitas-grid .receita-check .form-check-input {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid #28a745;
+}
+
+.receitas-grid .receita-check .form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let receitasVinculadas = [];
+    let todasReceitas = {};
+    
+    // Carregar todas as receitas disponíveis no carregamento da página
+    document.querySelectorAll('[data-receita-id]').forEach(card => {
+        const id = card.dataset.receitaId;
+        const titulo = card.querySelector('.receita-title').textContent.trim();
+        const img = card.querySelector('img');
+        const imgSrc = img ? img.src : '';
+        
+        todasReceitas[id] = {
+            titulo: titulo,
+            imgSrc: imgSrc
+        };
+    });
+    
+    // Botão para abrir modal de renomear
+    document.getElementById('btnAbrirRenomear').addEventListener('click', function(e) {
+        e.preventDefault();
+        // Fechar modal de gerenciar
+        bootstrap.Modal.getInstance(document.getElementById('editarCategoriaModal')).hide();
+        // Abrir modal de renomear
+        const renomearModal = new bootstrap.Modal(document.getElementById('renomearCategoriaModal'));
+        renomearModal.show();
+    });
+    
+    // Botão Vincular Receita
+    document.getElementById('btnVincularReceita').addEventListener('click', function() {
+        // Fechar modal de gerenciar
+        bootstrap.Modal.getInstance(document.getElementById('editarCategoriaModal')).hide();
+        
+        // Abrir modal de vincular
+        const vincularModal = new bootstrap.Modal(document.getElementById('vincularReceitasModal'));
+        vincularModal.show();
+        
+        // Desmarcar checkboxes das receitas já vinculadas
+        document.querySelectorAll('.vincular-receita-checkbox').forEach(cb => {
+            cb.checked = false;
+        });
+    });
+    
+    // Buscar receitas no modal de vincular
+    const buscarInput = document.getElementById('buscarReceitaVincular');
+    if (buscarInput) {
+        buscarInput.addEventListener('input', function() {
+            const termoBusca = this.value.toLowerCase().trim();
+            const receitaCards = document.querySelectorAll('#receitasVincularGrid .receita-card');
+            
+            receitaCards.forEach(card => {
+                const nomeReceita = card.dataset.receitaNome;
+                if (nomeReceita.includes(termoBusca)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+    
+    // Confirmar vinculação
+    document.getElementById('btnConfirmarVincular').addEventListener('click', function() {
+        const checkboxes = document.querySelectorAll('.vincular-receita-checkbox:checked');
+        const novasReceitas = Array.from(checkboxes).map(cb => cb.value);
+        
+        if (novasReceitas.length === 0) {
+            alert('Selecione pelo menos uma receita para vincular.');
+            return;
+        }
+        
+        // Adicionar às receitas vinculadas
+        receitasVinculadas = [...new Set([...receitasVinculadas, ...novasReceitas])];
+        atualizarGridVinculadas();
+        
+        // Fechar modal vincular e reabrir modal gerenciar
+        bootstrap.Modal.getInstance(document.getElementById('vincularReceitasModal')).hide();
+        const gerenciarModal = new bootstrap.Modal(document.getElementById('editarCategoriaModal'));
+        gerenciarModal.show();
+    });
+    
+    function atualizarGridVinculadas() {
+        const grid = document.getElementById('receitasVinculadasGrid');
+        grid.innerHTML = '';
+        
+        console.log('Receitas vinculadas:', receitasVinculadas);
+        console.log('Todas receitas:', todasReceitas);
+        
+        if (receitasVinculadas.length === 0) {
+            grid.innerHTML = '<p class="text-muted text-center py-4 w-100">Nenhuma receita vinculada. Clique em "Vincular Receita" para adicionar.</p>';
+            return;
+        }
+        
+        receitasVinculadas.forEach(receitaId => {
+            const receita = todasReceitas[receitaId];
+            console.log('Processando receita ID:', receitaId, 'Dados:', receita);
+            
+            if (receita) {
+                const card = document.createElement('div');
+                card.className = 'receita-vinculada-card';
+                card.innerHTML = `
+                    <button type="button" class="btn-remover" data-receita-id="${receitaId}">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                    <input type="hidden" name="receitas" value="${receitaId}">
+                    <div class="receita-image">
+                        <img src="${receita.imgSrc}" alt="${receita.titulo}" onerror="this.src='{% static "image/default/default-recipe.jpg" %}'">
+                    </div>
+                    <div class="receita-title">${receita.titulo}</div>
+                    <div class="receita-desc">Breve descrição do prato, breve descrição do prato.</div>
+                `;
+                grid.appendChild(card);
+                
+                // Evento de remover
+                card.querySelector('.btn-remover').addEventListener('click', function() {
+                    receitasVinculadas = receitasVinculadas.filter(id => id !== receitaId);
+                    atualizarGridVinculadas();
+                });
+            } else {
+                console.warn('Receita não encontrada no cache:', receitaId);
+            }
+        });
+    }
+    
+    // Submeter formulário de gerenciar
+    document.getElementById('formGerenciarCategoria').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const categoriaId = document.getElementById('editCategoriaId').value;
+        const nome = document.getElementById('editCategoriaNomeHidden').value || document.getElementById('editCategoriaNome').textContent;
+        const formData = new FormData(this);
+        
+        // Garantir que o nome está no formData
+        if (!formData.get('nome')) {
+            formData.set('nome', nome);
+        }
+        
+        fetch(`/administrativo/categorias/editar_categoria/${categoriaId}/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'Erro ao atualizar categoria.');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao atualizar categoria.');
+        });
+    });
+    
+    // Carregar categoria ao abrir modal de editar
+    window.carregarCategoriaEditar = function(categoriaId) {
+        fetch(`/administrativo/categorias/editar_categoria/${categoriaId}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('editCategoriaId').value = data.id;
+                document.getElementById('editCategoriaNome').textContent = data.nome;
+                document.getElementById('editCategoriaNomeHidden').value = data.nome;
+                document.getElementById('renomearCategoriaInput').value = data.nome;
+                
+                // Atualizar todasReceitas com os dados do backend
+                if (data.receitas) {
+                    data.receitas.forEach(receita => {
+                        todasReceitas[receita.id] = {
+                            titulo: receita.titulo,
+                            imgSrc: receita.imagem_url || '{% static "image/default/default-recipe.jpg" %}'
+                        };
+                    });
+                }
+                
+                receitasVinculadas = data.receitas_ids.map(String);
+                atualizarGridVinculadas();
+            })
+            .catch(error => {
+                console.error('Erro ao carregar categoria:', error);
+                alert('Erro ao carregar dados da categoria.');
+            });
+    };
+});
+</script>

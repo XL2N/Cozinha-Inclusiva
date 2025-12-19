@@ -1,0 +1,205 @@
+{% load static %}
+<!-- Modal Nova Categoria -->
+<div class="modal fade" id="adicionarCategoriaModal" tabindex="-1" aria-labelledby="adicionarCategoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="adicionarCategoriaModalLabel">
+                    Nova Categoria
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'adicionar_categoria' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <!-- Nome da Categoria -->
+                    <div class="mb-4">
+                        <label for="nomeCategoria" class="form-label fw-bold">Nome da Categoria</label>
+                        <input type="text" class="form-control" id="nomeCategoria" name="nome" required maxlength="100" placeholder="Digite o nome da Categoria...">
+                    </div>
+
+                    <!-- Buscar Receitas -->
+                    <div class="mb-3">
+                        <label for="buscarReceita" class="form-label fw-bold">Buscar Receita</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="buscarReceita" placeholder="Busque por Receita...">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fa-solid fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Receitas existentes -->
+                    <div class="mb-2">
+                        <label class="form-label fw-bold">Receitas existentes</label>
+                    </div>
+                    
+                    <!-- Grid de Receitas -->
+                    <div class="receitas-grid-adicionar" id="receitasGrid">
+                        {% for receita in receitas %}
+                        <div class="receita-card-adicionar" data-receita-nome="{{ receita.titulo|lower }}">
+                            <div class="receita-check-mark">
+                                <input class="form-check-input receita-checkbox" type="checkbox" name="receitas" value="{{ receita.id }}" id="receita{{ receita.id }}">
+                                <label for="receita{{ receita.id }}" class="check-icon">
+                                    <i class="fa-solid fa-check"></i>
+                                </label>
+                            </div>
+                            <div class="receita-image">
+                                {% if receita.capa %}
+                                <img src="{{ receita.capa.url }}" alt="{{ receita.titulo }}">
+                                {% else %}
+                                <img src="{% static 'image/default/default-recipe.jpg' %}" alt="{{ receita.titulo }}">
+                                {% endif %}
+                            </div>
+                            <div class="receita-title">
+                                {{ receita.titulo }}
+                            </div>
+                            <div class="receita-desc text-muted small">
+                                Breve descrição do prato, breve descrição do prato.
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-save me-2"></i>Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.receitas-grid-adicionar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+
+.receita-card-adicionar {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.receita-card-adicionar:hover {
+    border-color: #28a745;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+    transform: translateY(-2px);
+}
+
+.receita-card-adicionar .receita-check-mark {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+}
+
+.receita-card-adicionar .form-check-input {
+    display: none;
+}
+
+.receita-card-adicionar .check-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #28a745;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.receita-card-adicionar .check-icon i {
+    font-size: 0.9rem;
+    color: transparent;
+    transition: all 0.2s ease;
+}
+
+.receita-card-adicionar .form-check-input:checked + .check-icon {
+    background: #28a745;
+    border-color: #28a745;
+}
+
+.receita-card-adicionar .form-check-input:checked + .check-icon i {
+    color: white;
+}
+
+.receita-card-adicionar .receita-image {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.receita-card-adicionar .receita-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.receita-card-adicionar .receita-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.receita-card-adicionar .receita-desc {
+    font-size: 0.75rem;
+    color: #6c757d;
+    line-height: 1.2;
+}
+
+.receita-card-adicionar:has(.form-check-input:checked) {
+    border-color: #28a745;
+    background-color: #e8f5e9;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const buscarInput = document.getElementById('buscarReceita');
+    const receitasGrid = document.getElementById('receitasGrid');
+    
+    if (buscarInput) {
+        buscarInput.addEventListener('input', function() {
+            const termoBusca = this.value.toLowerCase().trim();
+            const receitaCards = receitasGrid.querySelectorAll('.receita-card-adicionar');
+            
+            receitaCards.forEach(card => {
+                const nomeReceita = card.dataset.receitaNome;
+                if (nomeReceita.includes(termoBusca)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Permitir clicar no card para selecionar
+    document.querySelectorAll('.receita-card-adicionar').forEach(card => {
+        card.addEventListener('click', function(e) {
+            const checkbox = this.querySelector('.form-check-input');
+            checkbox.checked = !checkbox.checked;
+        });
+    });
+});
+</script>
