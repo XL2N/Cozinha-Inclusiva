@@ -27,6 +27,20 @@ class Comentario(models.Model):
     class Meta:
         verbose_name = "Comentário"
         verbose_name_plural = "Comentários"
+        ordering = ['-data_hora']
 
     def __str__(self):
         return f"Comentário em {self.receita.titulo} por {self.usuario.username if self.usuario else 'Usuário Deletado'}"
+
+
+class PalavraBloqueada(models.Model):
+    palavra = models.CharField(max_length=100, unique=True, verbose_name="Palavra/Termo")
+    data_criacao = models.DateTimeField(auto_now_add=True, verbose_name="Data de Criação")
+
+    class Meta:
+        verbose_name = "Palavra Bloqueada"
+        verbose_name_plural = "Palavras Bloqueadas"
+        ordering = ['palavra']
+
+    def __str__(self):
+        return self.palavra
