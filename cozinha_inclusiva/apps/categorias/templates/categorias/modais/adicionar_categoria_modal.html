@@ -48,14 +48,16 @@
                                 {% if receita.capa %}
                                 <img src="{{ receita.capa.url }}" alt="{{ receita.titulo }}">
                                 {% else %}
-                                <img src="{% static 'image/default/default-recipe.jpg' %}" alt="{{ receita.titulo }}">
+                                <img src="{% static 'image/default/default_recipe.png' %}" alt="{{ receita.titulo }}">
                                 {% endif %}
                             </div>
-                            <div class="receita-title">
-                                {{ receita.titulo }}
-                            </div>
-                            <div class="receita-desc text-muted small">
-                                Breve descrição do prato, breve descrição do prato.
+                            <div class="receita-content">
+                                <div class="receita-title">
+                                    {{ receita.titulo }}
+                                </div>
+                                <div class="receita-desc">
+                                    Breve descrição do prato, breve descrição do prato.
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -74,8 +76,8 @@
 <style>
 .receitas-grid-adicionar {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+    grid-template-columns: 1fr;
+    gap: 12px;
     max-height: 400px;
     overflow-y: auto;
     padding: 10px;
@@ -140,30 +142,47 @@
     color: white;
 }
 
+.receita-card-adicionar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
 .receita-card-adicionar .receita-image {
-    width: 100%;
-    height: 120px;
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
     overflow: hidden;
-    border-radius: 6px;
-    margin-bottom: 8px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .receita-card-adicionar .receita-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+}
+
+.receita-card-adicionar .receita-content {
+    flex: 1;
+    min-width: 0;
 }
 
 .receita-card-adicionar .receita-title {
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
     color: #333;
     margin-bottom: 4px;
 }
 
 .receita-card-adicionar .receita-desc {
-    font-size: 0.75rem;
-    color: #6c757d;
+    font-size: 0.8rem;
+    color: #28a745;
     line-height: 1.2;
 }
 
