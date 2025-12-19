@@ -15,7 +15,9 @@
             <p class="text-muted small mb-0">Visualize, modere e remova comentários publicados</p>
         </div>
         <div>
-            <a href="#" class="btn btn-success btn-moderacao"><i class="fa-solid fa-bell-slash me-2"></i>Moderação</a>
+            <button class="btn btn-success btn-moderacao" data-bs-toggle="modal" data-bs-target="#modalModeracao">
+                <i class="fa-solid fa-bell-slash me-2"></i>Moderação
+            </button>
         </div>
     </div>
 
@@ -23,64 +25,120 @@
     <div class="filter-bar mb-3 d-flex gap-3 align-items-center">
         <div class="dropdown">
             <button class="btn btn-outline-success dropdown-toggle" type="button" id="periodoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                Período
+                {% if periodo_selecionado == '7' %}Últimos 7 dias
+                {% elif periodo_selecionado == '30' %}Últimos 30 dias
+                {% else %}Período{% endif %}
             </button>
             <ul class="dropdown-menu" aria-labelledby="periodoDropdown">
-                <li><a class="dropdown-item" href="#">Últimos 7 dias</a></li>
-                <li><a class="dropdown-item" href="#">Últimos 30 dias</a></li>
-                <li><a class="dropdown-item" href="#">Tudo</a></li>
+                <li><a class="dropdown-item" href="?">Tudo</a></li>
+                <li><a class="dropdown-item" href="?periodo=7">Últimos 7 dias</a></li>
+                <li><a class="dropdown-item" href="?periodo=30">Últimos 30 dias</a></li>
             </ul>
         </div>
 
-        <form class="search-form d-flex ms-2" method="get" action="{ % url 'gerenciar_comentarios' % }">
-            <input type="search" name="q" class="form-control search-input" placeholder="Buscar por RECEITA ou TERMO...">
+        <form class="search-form d-flex ms-2" method="get" action="{% url 'gerenciar_comentarios' %}">
+            <input type="search" name="q" class="form-control search-input" placeholder="Buscar por RECEITA ou TERMO..." value="{{ termo_busca }}">
             <button class="btn btn-outline-secondary search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
 
     <!-- List of comments -->
     <div class="comments-list">
-
-        {% comment %} Sample items; replace with loop over comentários {% endcomment %}
-        {% for i in "1234567" %}
-        <div class="comment-card card mb-3 p-3 d-flex align-items-center">
-            <div class="avatar me-3">
-                <img src="{% static 'image/avatar_placeholder.png' %}" alt="avatar">
-            </div>
-            <div class="comment-body flex-fill">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <strong>{{ forloop.counter }}º Usuario0001</strong>
-                        <div class="small text-muted">Gostei muito! \(^o^)/ &lt;3</div>
+        {% if comentarios %}
+            {% for comentario in comentarios %}
+            <div class="comment-card card mb-3 p-3">
+                <div class="d-flex align-items-start">
+                    <div class="avatar me-3" style="min-width: 60px;">
+                        {% if comentario.receita.imagem_capa %}
+                            <img src="{{ comentario.receita.imagem_capa.url }}" alt="Receita" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                        {% else %}
+                            <div style="width: 60px; height: 60px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-utensils text-success"></i>
+                            </div>
+                        {% endif %}
                     </div>
-                    <div class="text-end small text-muted">
-                        <div>01/08/2025 - 10:50 AM</div>
-                        <div class="link-recipe text-success">Recambele de grão de bico</div>
+                    <div class="comment-body flex-fill">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div style="flex: 1;">
+                                <strong>{{ forloop.counter }}º {{ comentario.usuario.username|default:"Usuário Deletado" }}</strong>
+                                <div class="small text-muted mt-1">{{ comentario.texto }}</div>
+                            </div>
+                            <div class="text-end small text-muted ms-3" style="min-width: 180px;">
+                                <div>{{ comentario.data_hora|date:"d/m/Y - H:i" }}</div>
+                                <div class="link-recipe text-success mt-1">
+                                    <a href="#" class="text-success text-decoration-none">{{ comentario.receita.titulo }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ms-3">
+                        <button class="btn btn-outline-danger btn-sm" title="Excluir" onclick="confirmarExclusaoComentario({{ comentario.id }}, '{{ comentario.usuario.username|default:"Usuário"|escapejs }}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="ms-3">
-                <a href="#" class="btn btn-outline-danger btn-sm" title="Excluir"><i class="fa-solid fa-trash"></i></a>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info text-center">
+                <i class="fa-solid fa-info-circle me-2"></i>
+                Nenhum comentário encontrado.
             </div>
-        </div>
-        {% endfor %}
-
+        {% endif %}
     </div>
 
     <!-- Pagination and info -->
+    {% if comentarios %}
     <div class="d-flex align-items-center justify-content-between mt-3">
-        <div class="text-muted small">Página 2 de 7 - 49 comentários totais</div>
+        <div class="text-muted small">
+            Página {{ comentarios.number }} de {{ comentarios.paginator.num_pages }} - {{ comentarios.paginator.count }} comentário{{ comentarios.paginator.count|pluralize }} totais
+        </div>
         <nav aria-label="Paginação">
             <ul class="pagination pagination-sm mb-0">
-                <li class="page-item"><a class="page-link">‹</a></li>
-                <li class="page-item"><a class="page-link">1</a></li>
-                <li class="page-item active"><a class="page-link">2</a></li>
-                <li class="page-item"><a class="page-link">3</a></li>
-                <li class="page-item"><a class="page-link">›</a></li>
+                {% if comentarios.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ comentarios.previous_page_number }}{% if periodo_selecionado %}&periodo={{ periodo_selecionado }}{% endif %}{% if termo_busca %}&q={{ termo_busca }}{% endif %}">‹</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">‹</span></li>
+                {% endif %}
+
+                {% for num in comentarios.paginator.page_range %}
+                    {% if comentarios.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% elif num > comentarios.number|add:'-3' and num < comentarios.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if periodo_selecionado %}&periodo={{ periodo_selecionado }}{% endif %}{% if termo_busca %}&q={{ termo_busca }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if comentarios.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ comentarios.next_page_number }}{% if periodo_selecionado %}&periodo={{ periodo_selecionado }}{% endif %}{% if termo_busca %}&q={{ termo_busca }}{% endif %}">›</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">›</span></li>
+                {% endif %}
             </ul>
         </nav>
     </div>
+    {% endif %}
 
 </div>
+
+<!-- Modais -->
+{% include 'comentarios/modais/excluir_comentario_modal.html' %}
+{% include 'comentarios/modais/moderacao_modal.html' %}
+
+<!-- Scripts -->
+<script>
+function confirmarExclusaoComentario(comentarioId, usuarioNome) {
+    document.getElementById('excluir_comentario_id').value = comentarioId;
+    document.getElementById('excluir_comentario_usuario').textContent = usuarioNome;
+    const modal = new bootstrap.Modal(document.getElementById('modalExcluirComentario'));
+    modal.show();
+}
+</script>
 
 {% endblock %}
