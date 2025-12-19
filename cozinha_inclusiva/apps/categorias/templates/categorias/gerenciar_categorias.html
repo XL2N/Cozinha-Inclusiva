@@ -22,77 +22,27 @@
     <!-- Lista de categorias -->
     <div class="categories-list">
 
-        <div class="category-row card mb-3 p-3 d-flex align-items-center">
-            <div class="form-check me-3">
-                <input class="form-check-input" type="checkbox" value="" id="cat1">
+            {% for categoria in categorias %}
+            <div class="category-row card mb-3 p-3 d-flex align-items-center">
+                <div class="form-check me-3">
+                    <input class="form-check-input" type="checkbox" value="" id="cat{{ forloop.counter }}">
+                </div>
+                <div class="cat-title me-4">
+                    <strong>{{ categoria.nome }}</strong>
+                </div>
+                <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
+                    <div><div class="stat-label">Visualizações</div><div class="stat-value">{{ categoria.visualizacao_total }}</div></div>
+                    <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">{% if categoria.receita_mais_popular %}{{ categoria.receita_mais_popular.titulo }}{% else %}-{% endif %}</div></div>
+                    <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">{{ categoria.receitas.count }}</div></div>
+                    <div><div class="stat-label">Data de Criação</div><div class="stat-value">{{ categoria.data_criacao|date:'d/m/Y' }}</div></div>
+                </div>
+                <div class="ms-3">
+                    <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
+                </div>
             </div>
-            <div class="cat-title me-4">
-                <strong>Sem Lactose</strong>
-            </div>
-            <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
-                <div><div class="stat-label">Visualizações</div><div class="stat-value">1350</div></div>
-                <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">Quiche Vegetariana</div></div>
-                <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">22</div></div>
-                <div><div class="stat-label">Data de Criação</div><div class="stat-value">10/06/2025</div></div>
-            </div>
-            <div class="ms-3">
-                <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
-            </div>
-        </div>
-
-        <div class="category-row card mb-3 p-3 d-flex align-items-center">
-            <div class="form-check me-3">
-                <input class="form-check-input" type="checkbox" value="" id="cat2">
-            </div>
-            <div class="cat-title me-4">
-                <strong>Sem Glúten</strong>
-            </div>
-            <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
-                <div><div class="stat-label">Visualizações</div><div class="stat-value">956</div></div>
-                <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">Bolo de Laranja</div></div>
-                <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">15</div></div>
-                <div><div class="stat-label">Data de Criação</div><div class="stat-value">10/06/2025</div></div>
-            </div>
-            <div class="ms-3">
-                <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
-            </div>
-        </div>
-
-        <div class="category-row card mb-3 p-3 d-flex align-items-center">
-            <div class="form-check me-3">
-                <input class="form-check-input" type="checkbox" value="" id="cat3">
-            </div>
-            <div class="cat-title me-4">
-                <strong>Sem Carne</strong>
-            </div>
-            <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
-                <div><div class="stat-label">Visualizações</div><div class="stat-value">1025</div></div>
-                <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">Lasanha de Berinjela</div></div>
-                <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">10</div></div>
-                <div><div class="stat-label">Data de Criação</div><div class="stat-value">10/06/2025</div></div>
-            </div>
-            <div class="ms-3">
-                <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
-            </div>
-        </div>
-
-        <div class="category-row card mb-3 p-3 d-flex align-items-center">
-            <div class="form-check me-3">
-                <input class="form-check-input" type="checkbox" value="" id="cat4">
-            </div>
-            <div class="cat-title me-4">
-                <strong>Baixo Açúcar</strong>
-            </div>
-            <div class="cat-stats d-flex gap-4 flex-fill text-muted small">
-                <div><div class="stat-label">Visualizações</div><div class="stat-value">859</div></div>
-                <div><div class="stat-label">Receita + Popular</div><div class="stat-value text-success">Torta de Limão</div></div>
-                <div><div class="stat-label">Receitas Vinculadas</div><div class="stat-value">19</div></div>
-                <div><div class="stat-label">Data de Criação</div><div class="stat-value">10/06/2025</div></div>
-            </div>
-            <div class="ms-3">
-                <a href="#" class="btn btn-outline-success btn-sm">Gerenciar</a>
-            </div>
-        </div>
+            {% empty %}
+            <div class="alert alert-info">Nenhuma categoria cadastrada.</div>
+            {% endfor %}
 
     </div>
 
