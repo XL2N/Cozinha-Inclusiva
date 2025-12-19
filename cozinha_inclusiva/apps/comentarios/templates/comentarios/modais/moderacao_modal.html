@@ -1,0 +1,130 @@
+<!-- Modal Moderação -->
+<div class="modal fade" id="modalModeracao" tabindex="-1" aria-labelledby="modalModeracaoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalModeracaoLabel">
+                    <i class="fa-solid fa-bell-slash me-2"></i>Moderação
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <i class="fa-solid fa-exclamation-triangle me-2"></i>
+                    <div>
+                        <strong>Digite e Salve Palavras e Termos nos quais você acha ofensivo para bloqueio dentro do site.</strong>
+                    </div>
+                </div>
+
+                <!-- Formulário para adicionar palavra -->
+                <form id="formAdicionarPalavra" method="post" action="{% url 'moderacao_palavras' %}">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="palavra_input" name="palavra" placeholder="Digite Palavras ou Termos..." required>
+                        <button class="btn btn-dark" type="submit">Enviar</button>
+                    </div>
+                </form>
+
+                <!-- Lista de palavras bloqueadas -->
+                <div class="border rounded p-3" style="min-height: 200px; max-height: 300px; overflow-y: auto;">
+                    <div id="listaPalavrasBloqueadas" class="d-flex flex-wrap gap-2">
+                        <!-- Palavras serão carregadas dinamicamente -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <form method="post" action="{% url 'salvar_moderacao' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-save me-2"></i>Salvar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Carregar palavras bloqueadas ao abrir o modal
+document.getElementById('modalModeracao').addEventListener('show.bs.modal', function() {
+    carregarPalavrasBloqueadas();
+});
+
+function carregarPalavrasBloqueadas() {
+    fetch('/administrativo/comentarios/moderacao_palavras/', {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const container = document.getElementById('listaPalavrasBloqueadas');
+        container.innerHTML = '';
+        
+        if (data.palavras && data.palavras.length > 0) {
+            data.palavras.forEach(palavra => {
+                const badge = document.createElement('div');
+                badge.className = 'badge bg-success d-flex align-items-center gap-2 p-2';
+                badge.style.fontSize = '14px';
+                badge.innerHTML = `
+                    <span>${palavra.palavra}</span>
+                    <button type="button" class="btn-close btn-close-white btn-sm" onclick="removerPalavra(${palavra.id})" style="font-size: 10px;"></button>
+                `;
+                container.appendChild(badge);
+            });
+        } else {
+            container.innerHTML = '<div class="text-muted text-center w-100">Nenhuma palavra bloqueada ainda.</div>';
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao carregar palavras:', error);
+    });
+}
+
+function removerPalavra(palavraId) {
+    if (!confirm('Deseja remover esta palavra da lista de bloqueio?')) return;
+    
+    fetch(`/administrativo/comentarios/remover_palavra_bloqueada/${palavraId}/`, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            carregarPalavrasBloqueadas();
+        } else {
+            alert('Erro ao remover palavra: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao remover palavra');
+    });
+}
+
+// Adicionar palavra via formulário
+document.getElementById('formAdicionarPalavra').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(() => {
+        document.getElementById('palavra_input').value = '';
+        carregarPalavrasBloqueadas();
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+    });
+});
+</script>

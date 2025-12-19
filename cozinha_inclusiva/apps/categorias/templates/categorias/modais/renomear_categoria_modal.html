@@ -1,0 +1,72 @@
+<!-- Modal Renomear Categoria -->
+<div class="modal fade" id="renomearCategoriaModal" tabindex="-1" aria-labelledby="renomearCategoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title text-success fw-bold" id="renomearCategoriaModalLabel">
+                    Renomear Categoria
+                </h5>
+            </div>
+            <div class="modal-body pt-2">
+                <input type="text" class="form-control" id="renomearCategoriaInput" placeholder="Sem Lactose..." maxlength="100">
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-link text-secondary text-decoration-none" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-success" id="btnSalvarRenomear">
+                    Salvar Alteração
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Salvar renomeação
+    document.getElementById('btnSalvarRenomear').addEventListener('click', function() {
+        const novoNome = document.getElementById('renomearCategoriaInput').value.trim();
+        
+        if (!novoNome) {
+            alert('Por favor, digite um nome para a categoria.');
+            return;
+        }
+        
+        // Atualizar nome no modal de gerenciar
+        document.getElementById('editCategoriaNome').textContent = novoNome;
+        document.getElementById('editCategoriaNomeHidden').value = novoNome;
+        
+        // Fechar modal e voltar para o de gerenciar
+        bootstrap.Modal.getInstance(document.getElementById('renomearCategoriaModal')).hide();
+        const editModal = new bootstrap.Modal(document.getElementById('editarCategoriaModal'));
+        editModal.show();
+    });
+});
+</script>
+
+<style>
+#renomearCategoriaModal .modal-content {
+    border-radius: 12px;
+}
+
+#renomearCategoriaModal .modal-title {
+    font-size: 1.1rem;
+}
+
+#renomearCategoriaModal .form-control {
+    border: 1px solid #dee2e6;
+    padding: 0.6rem;
+    font-size: 0.95rem;
+}
+
+#renomearCategoriaModal .form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+#renomearCategoriaModal .btn-success {
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+}
+</style>

@@ -1,0 +1,160 @@
+<!-- Modal Editar Receita -->
+<div class="modal fade" id="modalEditarReceita" tabindex="-1" aria-labelledby="modalEditarReceitaLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalEditarReceitaLabel">Editar Receita</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Fechar"></button>
+            </div>
+            <form id="formEditarReceita" enctype="multipart/form-data" method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="receita_id" id="editar_receita_id">
+                <div class="modal-body">
+
+                    <div class="row g-3 mb-2">
+                        <!-- Nome da Receita -->
+                        <div class="col-md-6">
+                            <label for="editar_titulo" class="form-label">Nome da receita</label>
+                            <input type="text" class="form-control" id="editar_titulo" name="titulo" required>
+                        </div>
+                        <!-- Descrição -->
+                        <div class="col-md-6">
+                            <label for="editar_descricao" class="form-label">Descrição</label>
+                            <input type="text" class="form-control" id="editar_descricao" name="descricao" required>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-2">
+                        <!-- Referência -->
+                        <div class="col-md-12">
+                            <label for="editar_referencia" class="form-label">Referência (URL)</label>
+                            <input type="url" class="form-control" id="editar_referencia" name="referencia" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-2">
+                        <!-- Restrições Alimentares -->
+                        <div class="col-12">
+                            <label class="form-label">Restrições Alimentares</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="editar_sem_lactose" name="sem_lactose">
+                                    <label class="form-check-label" for="editar_sem_lactose">Sem Lactose</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="editar_sem_gluten" name="sem_gluten">
+                                    <label class="form-check-label" for="editar_sem_gluten">Sem Glúten</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="editar_vegano" name="vegano">
+                                    <label class="form-check-label" for="editar_vegano">Vegano</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="editar_vegetariano" name="vegetariano">
+                                    <label class="form-check-label" for="editar_vegetariano">Vegetariano</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-2">
+                        <!-- Ingredientes -->
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="form-label">Lista de Ingredientes</label>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="limparSelecaoIngredientesEditar()">Limpar Seleção</button>
+                            </div>
+                            <div class="ingredientes-lista border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                                {% for ingrediente in ingredientes %}
+                                <div class="form-check d-flex align-items-center mb-1">
+                                    <input class="form-check-input me-2" type="checkbox" value="{{ ingrediente.id }}" id="editar_ingrediente{{ ingrediente.id }}" name="ingredientes">
+                                    <label class="form-check-label flex-grow-1" for="editar_ingrediente{{ ingrediente.id }}">{{ ingrediente.nome }}</label>
+                                    <input type="number" class="form-control form-control-sm mx-1" name="quantidade_{{ ingrediente.id }}" placeholder="Quant." min="0" style="width: 70px;">
+                                    <input type="text" class="form-control form-control-sm" name="unidade_{{ ingrediente.id }}" placeholder="Unidade" style="width: 70px;">
+                                </div>
+                                {% endfor %}
+                            </div> 
+                        </div>
+
+                        <!-- Imagens da Receita -->
+                        <div class="col-md-6">
+                            <label class="form-label">Imagem de Capa</label>
+                            <div class="upload-area border rounded d-flex flex-column align-items-center justify-content-center p-4" style="height: 200px; background: #f8f9fa; border-style: dashed;">
+                                <i class="fa-solid fa-cloud-arrow-up fa-2x mb-2 text-success"></i>
+                                <input type="file" class="form-control d-none" id="editar_imagem_capa" name="imagem_capa" accept="image/png, image/jpeg, image/gif" onchange="previewImagensReceitaEditar(event)">
+                                <label for="editar_imagem_capa" class="text-success" style="cursor:pointer;">Clique para atualizar imagem</label>
+                                <div class="small text-muted">PNG, JPG, GIF (MAX. 5MB)</div>
+                                <div id="previewImagensReceitaEditar" class="mt-2 d-flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-2">
+                        <!-- Modo de Preparo -->
+                        <div class="col-12">
+                            <label class="form-label">Modo de Preparo</label>
+                            <div id="editarModoPreparoContainer">
+                                <div class="d-flex align-items-start gap-2 mb-2">
+                                    <button type="button" class="btn btn-outline-success" onclick="adicionarPassoPreparoEditar()">+</button>
+                                    <div class="flex-grow-1">
+                                        <textarea class="form-control" name="modo_preparo[]" rows="2" required placeholder="Descreva o passo do preparo"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-2">
+                        <!-- Categorias -->
+                        <div class="col-12">
+                            <label class="form-label">Categorias</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for categoria in categorias %}
+                                <div class="form-check">
+                                    <input class="btn-check" type="checkbox" id="editar_categoria{{ categoria.id }}" name="categorias" value="{{ categoria.id }}">
+                                    <label class="btn btn-outline-success" for="editar_categoria{{ categoria.id }}">{{ categoria.nome }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-save me-2"></i>Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('formEditarReceita').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const receitaId = document.getElementById('editar_receita_id').value;
+    this.action = `/administrativo/receitas/editar_receita/${receitaId}/`;
+    this.submit();
+});
+
+function previewImagensReceitaEditar(event) {
+    const preview = document.getElementById('previewImagensReceitaEditar');
+    preview.innerHTML = '';
+    Array.from(event.target.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'rounded';
+            img.style.width = '60px';
+            img.style.height = '60px';
+            img.style.objectFit = 'cover';
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+</script>

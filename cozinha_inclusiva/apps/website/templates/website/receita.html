@@ -232,4 +232,42 @@
     });
 </script>
 
+<!-- Modal de Palavra Bloqueada -->
+<div class="modal fade" id="modalPalavraBloqueada" tabindex="-1" aria-labelledby="modalPalavraBloqueadaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalPalavraBloqueadaLabel">
+                    <i class="fa-solid fa-exclamation-triangle me-2"></i>Comentário Bloqueado
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <i class="fa-solid fa-ban fa-3x text-danger mb-3"></i>
+                <h5 class="mb-3">Termo Indevido Detectado</h5>
+                <p class="mb-2">Seu comentário contém uma palavra ou termo considerado ofensivo:</p>
+                <div class="alert alert-danger d-inline-block">
+                    <strong>"{{ palavra_bloqueada }}"</strong>
+                </div>
+                <p class="text-muted mt-3 small">
+                    Por favor, revise seu comentário e tente novamente sem utilizar termos ofensivos.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Entendi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if palavra_bloqueada %}
+<script>
+    // Mostrar o modal automaticamente se houver palavra bloqueada
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = new bootstrap.Modal(document.getElementById('modalPalavraBloqueada'));
+        modal.show();
+    });
+</script>
+{% endif %}
+
 {% endblock %}

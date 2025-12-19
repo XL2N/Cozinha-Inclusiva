@@ -24,6 +24,40 @@
                             <input type="text" class="form-control" id="descricao" name="descricao" required>
                         </div>
                     </div>
+
+                    <div class="row g-3 mb-2">
+                        <!-- Referência -->
+                        <div class="col-md-12">
+                            <label for="referencia" class="form-label">Referência (URL)</label>
+                            <input type="url" class="form-control" id="referencia" name="referencia" placeholder="https://...">
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-2">
+                        <!-- Restrições Alimentares -->
+                        <div class="col-12">
+                            <label class="form-label">Restrições Alimentares</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sem_lactose" name="sem_lactose">
+                                    <label class="form-check-label" for="sem_lactose">Sem Lactose</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sem_gluten" name="sem_gluten">
+                                    <label class="form-check-label" for="sem_gluten">Sem Glúten</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="vegano" name="vegano">
+                                    <label class="form-check-label" for="vegano">Vegano</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="vegetariano" name="vegetariano">
+                                    <label class="form-check-label" for="vegetariano">Vegetariano</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row g-3 mb-2">
                         <!-- Ingredientes -->
                         <div class="col-md-6">

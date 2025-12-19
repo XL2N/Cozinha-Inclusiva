@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from apps.receitas.models import Receita
 from apps.categorias.models import Categoria
-from apps.comentarios.models import Comentario
+from apps.comentarios.models import Comentario, PalavraBloqueada
 from .forms import BuscaForm, ComentarioForm
 
 # Create your views here.
@@ -37,17 +37,25 @@ def receita_selecionada(request, receita_id):
     receita.visualizacoes += 1
     receita.save()
 
-    # Lista de palavras ofensivas (pode ser expandida)
-    PALAVRAS_PROIBIDAS = [
-        'palavrão1', 'palavrão2', 'idiota', 'burro', 'estúpido', 'otário', 'imbecil', 'palavraofensiva'
-    ]
-
+    palavra_bloqueada_encontrada = None
+    
     if request.method == 'POST' and request.user.is_authenticated:
         form = ComentarioForm(request.POST)
         if form.is_valid():
-            texto = form.cleaned_data['texto'].lower()
-            if any(p in texto for p in PALAVRAS_PROIBIDAS):
-                messages.error(request, 'Seu comentário contém termos ofensivos e não foi enviado.')
+            texto_comentario = form.cleaned_data['texto'].lower()
+            
+            # Buscar palavras bloqueadas no banco de dados
+            palavras_bloqueadas = PalavraBloqueada.objects.all().values_list('palavra', flat=True)
+            
+            # Verificar se o comentário contém alguma palavra bloqueada
+            for palavra in palavras_bloqueadas:
+                if palavra.lower() in texto_comentario:
+                    palavra_bloqueada_encontrada = palavra
+                    break
+            
+            if palavra_bloqueada_encontrada:
+                # Não salvar o comentário e passar a palavra para o template
+                pass
             else:
                 comentario = form.save(commit=False)
                 comentario.receita = receita
@@ -66,6 +74,7 @@ def receita_selecionada(request, receita_id):
         'comentarios': comentarios,
         'form': form,
         'total_comentarios': comentarios.count(),
+        'palavra_bloqueada': palavra_bloqueada_encontrada,
     }
 
     return render(request, 'website/receita.html', context)

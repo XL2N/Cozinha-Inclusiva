@@ -27,116 +27,218 @@
                     Categoria
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="categoriaDropdown">
-                    <li><a class="dropdown-item" href="#">Todas</a></li>
-                    <li><a class="dropdown-item" href="#">Sobremesas</a></li>
-                    <li><a class="dropdown-item" href="#">Pratos Principais</a></li>
+                    <li><a class="dropdown-item" href="{% url 'gerenciar_receitas' %}">Todas</a></li>
+                    {% for categoria in categorias %}
+                    <li><a class="dropdown-item" href="?categoria={{ categoria.id }}">{{ categoria.nome }}</a></li>
+                    {% endfor %}
                 </ul>
             </div>
 
             <div class="dropdown">
                 <button class="btn btn-outline-success dropdown-toggle" type="button" id="periodoDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Período
+                    {% if periodo_selecionado == '7' %}Últimos 7 dias
+                    {% elif periodo_selecionado == '30' %}Últimos 30 dias
+                    {% else %}Período{% endif %}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="periodoDropdown">
-                    <li><a class="dropdown-item" href="#">Últimos 7 dias</a></li>
-                    <li><a class="dropdown-item" href="#">Últimos 30 dias</a></li>
-                    <li><a class="dropdown-item" href="#">Tudo</a></li>
+                    <li><a class="dropdown-item" href="?">Tudo</a></li>
+                    <li><a class="dropdown-item" href="?periodo=7">Últimos 7 dias</a></li>
+                    <li><a class="dropdown-item" href="?periodo=30">Últimos 30 dias</a></li>
                 </ul>
             </div>
         </div>
 
-        <form class="search-form d-flex align-items-center ms-auto" method="get" action="{ % url 'gerenciar_receitas' % }">
-            <input type="search" name="q" class="form-control search-input" placeholder="Buscar por NOME ou INGREDIENTE...">
+        <form class="search-form d-flex align-items-center ms-auto" method="get" action="{% url 'gerenciar_receitas' %}">
+            <input type="search" name="q" class="form-control search-input" placeholder="Buscar por NOME ou INGREDIENTE..." value="{{ termo_busca }}">
             <button class="btn btn-outline-secondary search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
 
     <!-- Grid of recipe cards -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        {% comment %} Exemplo de cards estáticos; substitua por loop dinâmico no futuro {% endcomment %}
-        <div class="col">
-            <div class="card recipe-card h-100">
-                <div class="card-img-top img-wrap">
-                    <img src="{% static 'image/placeholder_receita.png' %}" alt="Receita 1">
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title mb-1">Receita 1</h6>
-                    <small class="text-muted mb-3">10/05/2025</small>
-                    <div class="mt-auto d-flex justify-content-end gap-2">
-                        <a href="#" class="btn btn-sm btn-outline-success" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="fa-solid fa-trash"></i></a>
+        {% if receitas %}
+            {% for receita in receitas %}
+            <div class="col">
+                <div class="card recipe-card h-100">
+                    <div class="card-img-top img-wrap" style="min-height: 200px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                        {% if receita.imagem_capa %}
+                            <img src="{{ receita.imagem_capa.url }}" alt="{{ receita.titulo }}" style="width: 100%; height: 200px; object-fit: cover;">
+                        {% else %}
+                            <i class="fa-solid fa-utensils fa-3x text-success"></i>
+                        {% endif %}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title mb-1" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ receita.titulo }}">{{ receita.titulo }}</h6>
+                        <small class="text-muted mb-3">{{ receita.data_publicacao|date:"d/m/Y" }}</small>
+                        <div class="mt-auto d-flex justify-content-end gap-2">
+                            <button class="btn btn-sm btn-outline-success" title="Editar" onclick="carregarReceitaParaEdicao({{ receita.id }})">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" title="Excluir" onclick="confirmarExclusao({{ receita.id }}, '{{ receita.titulo|escapejs }}')">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col">
-            <div class="card recipe-card h-100">
-                <div class="card-img-top img-wrap">
-                    <img src="{% static 'image/placeholder_receita.png' %}" alt="Receita 2">
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title mb-1">Receita 2</h6>
-                    <small class="text-muted mb-3">10/05/2025</small>
-                    <div class="mt-auto d-flex justify-content-end gap-2">
-                        <a href="#" class="btn btn-sm btn-outline-success" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="fa-solid fa-trash"></i></a>
-                    </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="fa-solid fa-info-circle me-2"></i>
+                    Nenhuma receita encontrada.
                 </div>
             </div>
-        </div>
-
-        <div class="col">
-            <div class="card recipe-card h-100">
-                <div class="card-img-top img-wrap">
-                    <img src="{% static 'image/placeholder_receita.png' %}" alt="Receita 3">
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title mb-1">Receita 3</h6>
-                    <small class="text-muted mb-3">10/05/2025</small>
-                    <div class="mt-auto d-flex justify-content-end gap-2">
-                        <a href="#" class="btn btn-sm btn-outline-success" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="fa-solid fa-trash"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card recipe-card h-100">
-                <div class="card-img-top img-wrap">
-                    <img src="{% static 'image/placeholder_receita.png' %}" alt="Receita 4">
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h6 class="card-title mb-1">Receita 4</h6>
-                    <small class="text-muted mb-3">10/05/2025</small>
-                    <div class="mt-auto d-flex justify-content-end gap-2">
-                        <a href="#" class="btn btn-sm btn-outline-success" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="fa-solid fa-trash"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        {% endif %}
     </div>
 
     <!-- Pagination and info -->
+    {% if receitas %}
     <div class="d-flex align-items-center justify-content-between mt-4">
-        <div class="text-muted small">Página 1 de 3 - 55 receitas totais</div>
+        <div class="text-muted small">
+            Página {{ receitas.number }} de {{ receitas.paginator.num_pages }} - {{ receitas.paginator.count }} receita{{ receitas.paginator.count|pluralize }} totais
+        </div>
         <nav aria-label="Paginação">
             <ul class="pagination pagination-sm mb-0">
-                <li class="page-item disabled"><a class="page-link">‹</a></li>
-                <li class="page-item active"><a class="page-link">1</a></li>
-                <li class="page-item"><a class="page-link">2</a></li>
-                <li class="page-item"><a class="page-link">3</a></li>
-                <li class="page-item"><a class="page-link">›</a></li>
+                {% if receitas.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ receitas.previous_page_number }}{% if categoria_selecionada %}&categoria={{ categoria_selecionada }}{% endif %}{% if periodo_selecionado %}&periodo={{ periodo_selecionado }}{% endif %}{% if termo_busca %}&q={{ termo_busca }}{% endif %}">‹</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">‹</span></li>
+                {% endif %}
+
+                {% for num in receitas.paginator.page_range %}
+                    {% if receitas.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% elif num > receitas.number|add:'-3' and num < receitas.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if categoria_selecionada %}&categoria={{ categoria_selecionada }}{% endif %}{% if periodo_selecionado %}&periodo={{ periodo_selecionado }}{% endif %}{% if termo_busca %}&q={{ termo_busca }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if receitas.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ receitas.next_page_number }}{% if categoria_selecionada %}&categoria={{ categoria_selecionada }}{% endif %}{% if periodo_selecionado %}&periodo={{ periodo_selecionado }}{% endif %}{% if termo_busca %}&q={{ termo_busca }}{% endif %}">›</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">›</span></li>
+                {% endif %}
             </ul>
         </nav>
     </div>
+    {% endif %}
 
 </div>
-<!-- M -->
-    {% include 'receitas/modais/adicionar_receita_modal.html' %}
 
+<!-- Modais -->
+{% include 'receitas/modais/adicionar_receita_modal.html' %}
+{% include 'receitas/modais/editar_receita_modal.html' %}
+{% include 'receitas/modais/excluir_receita_modal.html' %}
+
+<!-- Scripts -->
+<script>
+function carregarReceitaParaEdicao(receitaId) {
+    fetch(`/administrativo/receitas/editar_receita/${receitaId}/`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Preencher o modal de edição com os dados da receita
+        document.getElementById('editar_receita_id').value = data.id;
+        document.getElementById('editar_titulo').value = data.titulo;
+        document.getElementById('editar_descricao').value = data.descricao;
+        document.getElementById('editar_referencia').value = data.referencia;
+        
+        // Restrições alimentares
+        document.getElementById('editar_sem_lactose').checked = data.sem_lactose;
+        document.getElementById('editar_sem_gluten').checked = data.sem_gluten;
+        document.getElementById('editar_vegano').checked = data.vegano;
+        document.getElementById('editar_vegetariano').checked = data.vegetariano;
+        
+        // Limpar seleções anteriores
+        document.querySelectorAll('#modalEditarReceita input[name="categorias"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('#modalEditarReceita input[name="ingredientes"]').forEach(cb => cb.checked = false);
+        
+        // Marcar categorias
+        data.categorias.forEach(catId => {
+            const checkbox = document.querySelector(`#modalEditarReceita input[name="categorias"][value="${catId}"]`);
+            if (checkbox) checkbox.checked = true;
+        });
+        
+        // Marcar ingredientes e preencher quantidades
+        data.ingredientes.forEach(ing => {
+            const checkbox = document.querySelector(`#modalEditarReceita input[name="ingredientes"][value="${ing.id}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+                document.querySelector(`#modalEditarReceita input[name="quantidade_${ing.id}"]`).value = ing.quantidade;
+                document.querySelector(`#modalEditarReceita input[name="unidade_${ing.id}"]`).value = ing.unidade;
+            }
+        });
+        
+        // Modo de preparo
+        const container = document.getElementById('editarModoPreparoContainer');
+        container.innerHTML = '';
+        data.modo_preparo.forEach((passo, index) => {
+            if (index === 0) {
+                container.innerHTML = `
+                    <div class="d-flex align-items-start gap-2 mb-2">
+                        <button type="button" class="btn btn-outline-success" onclick="adicionarPassoPreparoEditar()">+</button>
+                        <div class="flex-grow-1">
+                            <textarea class="form-control" name="modo_preparo[]" rows="2" required>${passo}</textarea>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const div = document.createElement('div');
+                div.className = 'd-flex align-items-start gap-2 mb-2';
+                div.innerHTML = `
+                    <button type="button" class="btn btn-outline-danger" onclick="this.parentElement.remove()">-</button>
+                    <div class="flex-grow-1">
+                        <textarea class="form-control" name="modo_preparo[]" rows="2" required>${passo}</textarea>
+                    </div>
+                `;
+                container.appendChild(div);
+            }
+        });
+        
+        // Abrir o modal
+        const modal = new bootstrap.Modal(document.getElementById('modalEditarReceita'));
+        modal.show();
+    })
+    .catch(error => {
+        console.error('Erro ao carregar receita:', error);
+        alert('Erro ao carregar dados da receita');
+    });
+}
+
+function confirmarExclusao(receitaId, receitaTitulo) {
+    document.getElementById('excluir_receita_id').value = receitaId;
+    document.getElementById('excluir_receita_nome').textContent = receitaTitulo;
+    const modal = new bootstrap.Modal(document.getElementById('modalExcluirReceita'));
+    modal.show();
+}
+
+function adicionarPassoPreparoEditar() {
+    const container = document.getElementById('editarModoPreparoContainer');
+    const div = document.createElement('div');
+    div.className = 'd-flex align-items-start gap-2 mb-2';
+    div.innerHTML = `
+        <button type="button" class="btn btn-outline-danger" onclick="this.parentElement.remove()">-</button>
+        <div class="flex-grow-1">
+            <textarea class="form-control" name="modo_preparo[]" rows="2" required placeholder="Descreva o passo do preparo"></textarea>
+        </div>
+    `;
+    container.appendChild(div);
+}
+
+function limparSelecaoIngredientesEditar() {
+    document.querySelectorAll('#modalEditarReceita .ingredientes-lista input[type=checkbox]').forEach(cb => cb.checked = false);
+    document.querySelectorAll('#modalEditarReceita .ingredientes-lista input[type=number], #modalEditarReceita .ingredientes-lista input[type=text]').forEach(inp => inp.value = '');
+}
+</script>
 
 {% endblock %}
