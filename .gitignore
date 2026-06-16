@@ -28,6 +28,7 @@ ENV/
 
 # Static files collected
 # /static/
+cozinha_inclusiva/staticfiles/
 
 # Cache
 # .cache/
