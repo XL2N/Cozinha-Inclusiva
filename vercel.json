@@ -1,15 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "cd cozinha_inclusiva && python manage.py collectstatic --noinput",
-  "functions": {
-    "api/index.py": {
-      "excludeFiles": "{**/__pycache__/**,**/*.pyc,.git/**,.venv/**,venv/**}"
-    }
-  },
-  "rewrites": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/api/index.py"
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.py"
     }
   ]
 }
