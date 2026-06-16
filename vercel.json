@@ -5,9 +5,25 @@
     {
       "src": "api/index.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "cozinha_inclusiva/cozinha_inclusiva/static/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "cozinha_inclusiva/media/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/cozinha_inclusiva/cozinha_inclusiva/static/$1"
+    },
+    {
+      "src": "/media/(.*)",
+      "dest": "/cozinha_inclusiva/media/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/api/index.py"
